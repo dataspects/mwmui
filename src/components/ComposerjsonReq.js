@@ -5,10 +5,10 @@ export default function ComposerjsonReq({ composerjsonReq }) {
   return (
     <>
       <h2>Required By composer.json</h2>
-      {Object.keys(composerjsonReq).length > 0 ? (
+      {composerjsonReq && Object.keys(composerjsonReq).length > 0 ? (
         <ul>
           {Object.keys(composerjsonReq).map(key => {
-            return <li>{composerjsonReq[key]}</li>
+            return <li key={composerjsonReq[key]}>{composerjsonReq[key]}</li>
           })}
         </ul>
       ) : (
