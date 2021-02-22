@@ -1,0 +1,57 @@
+{
+  "name": "dmwm",
+  "private": true,
+  "description": "dataspects MediaWiki Manager",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "build": "gatsby build",
+    "develop": "gatsby develop",
+    "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
+    "start": "npm run develop",
+    "serve": "gatsby serve",
+    "clean": "gatsby clean",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
+    "test:e2e": "start-server-and-test develop http://localhost:8000 cypress:open",
+    "deploy": "gatsby clean && gatsby build --prefix-paths && cd public && rsync -azvh --progress --delete . /home/lex/mediawiki-manager/mwmui/ && cd -"
+  },
+  "dependencies": {
+    "@material-ui/core": "4.11.3",
+    "@material-ui/icons": "4.11.2",
+    "@material-ui/lab": "4.0.0-alpha.57",
+    "@material-ui/styles": "4.11.3",
+    "ace-builds": "1.4.12",
+    "axios": "0.21.1",
+    "babel-plugin-styled-components": "^1.12.0",
+    "dotenv": "8.2.0",
+    "gatsby": "^2.32.4",
+    "gatsby-cli": "^2.19.1",
+    "gatsby-plugin-layout": "1.10.0",
+    "gatsby-plugin-material-ui": "^2.1.10",
+    "gatsby-plugin-styled-components": "^3.10.0",
+    "mermaid": "8.9.1",
+    "moment": "2.29.1",
+    "mui-datatables": "3.7.6",
+    "node-sass": "5.0.0",
+    "notistack": "1.0.3",
+    "react": "^17.0.1",
+    "react-ace": "9.3.0",
+    "react-dom": "^17.0.1",
+    "react-helmet": "6.1.0",
+    "styled-components": "^5.2.1",
+    "websocket": "1.0.33"
+  },
+  "devDependencies": {
+    "cypress": "^6.5.0",
+    "prettier": "2.2.1",
+    "start-server-and-test": "^1.12.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dataspects/search"
+  },
+  "bugs": {
+    "url": "https://github.com/dataspects/search/issues"
+  }
+}
