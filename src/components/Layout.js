@@ -1,5 +1,6 @@
 import React from "react"
 import { Helmet } from "react-helmet"
+import { Grid, Box } from "@material-ui/core"
 
 export default function Layout({ children }) {
   return (
@@ -9,7 +10,16 @@ export default function Layout({ children }) {
         <title>dataspects MediaWiki Manager</title>
         <link rel="canonical" href="https://dserver/ui" />
       </Helmet>
-      <h1>MediaWiki Manager</h1>
+      <Grid container spacing={5}>
+        <Grid item xs={2}>
+          <img src="/images/dataspects.png" alt="dataspects" />
+        </Grid>
+        <Grid item xs={10}>
+          <Box m={3}>
+            <h1>MediaWiki Manager</h1>
+          </Box>
+        </Grid>
+      </Grid>
       {children}
     </>
   )

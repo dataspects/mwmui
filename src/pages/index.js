@@ -1,5 +1,5 @@
 import React from "react"
-import { Grid, Paper, LinearProgress } from "@material-ui/core"
+import { Grid, Paper, LinearProgress, Chip, Box } from "@material-ui/core"
 import axios from "axios"
 import ExtensionsInDirectory from "../components/ExtensionsInDirectory"
 import ComposerjsonReq from "../components/ComposerjsonReq"
@@ -105,7 +105,10 @@ const Home = () => {
         />
       </Grid>
       <Grid item xs={12}>
-        <Paper>{logOutput}</Paper>
+        <Chip label="Log Output" />
+        <Box m={2}>
+          <Paper>{logOutput}</Paper>
+        </Box>
       </Grid>
       <Grid item xs={3}>
         <ExtensionsInDirectory extensionsInDirectory={extensionsInDirectory} />
