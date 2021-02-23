@@ -12,7 +12,8 @@ export default function Layout({ children }) {
       </Helmet>
       <Grid container spacing={5}>
         <Grid item xs={2}>
-          <img src="/images/dataspects.png" alt="dataspects" />
+          {/* FIXME: this image doesn't use the path prefix, so I hacked a ui/ in front of it. */}
+          <img src="/ui/images/dataspects.png" alt="dataspects" />
         </Grid>
         <Grid item xs={10}>
           <Box m={3}>
