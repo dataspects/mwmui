@@ -1,24 +1,16 @@
 import React from "react"
-import {
-  Grid,
-  Button,
-  TextField,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  RadioGroup,
-  Radio,
-  Box,
-} from "@material-ui/core"
+import { Grid } from "@material-ui/core"
 import axios from "axios"
 import ExtensionsInDirectory from "../components/ExtensionsInDirectory"
 import ComposerjsonReq from "../components/ComposerjsonReq"
 import WfLoadExtensions from "../components/WfLoadExtensions"
+import ManageExtensions from "../components/ManageExtensions"
 
 const Home = () => {
   const [extensionsInDirectory, setExtensionsInDirectory] = React.useState([])
   const [composerjsonReq, setComposerjsonReq] = React.useState([])
   const [wfLoadExtensions, setWfLoadExtensions] = React.useState([])
+  const [extensionCatalogue, setExtensionCatalogue] = React.useState([])
 
   React.useEffect(() => {
     axios.get(`${process.env.API_URL}?action=overview`).then(res => {
@@ -26,21 +18,32 @@ const Home = () => {
       setComposerjsonReq(res.data.composerjsonReq)
       setWfLoadExtensions(res.data.wfLoadExtensions)
     })
+    axios.get(`${process.env.API_URL}?action=extensionCatalogue`).then(res => {
+      setExtensionCatalogue(res.data.extensionCatalogue)
+    })
   }, [])
+
+  const [currentExtensionName, setCurrentExtensionName] = React.useState("")
+  const handleExtensionName = event => {
+    setCurrentExtensionName(event.target.value)
+  }
 
   const handleEnableDisableExtension = event => {
     event.preventDefault()
-    const { extensionName, mode } = event.currentTarget.elements
-    axios
-      .get(
-        `${process.env.API_URL}?action=enableDisableExtension&mode=${mode.value}&extensionName=${extensionName.value}`
-      )
-      .then(res => {
-        console.log(res.data)
-      })
-      .catch(err => {
-        console.log(err)
-      })
+    const { mode } = event.currentTarget.elements
+    console.log(
+      `${process.env.API_URL}?action=enableDisableExtension&mode=${mode.value}&extensionName=${currentExtensionName}`
+    )
+    // axios
+    //   .get(
+    //     `${process.env.API_URL}?action=enableDisableExtension&mode=${mode.value}&extensionName=${currentExtensionName}`
+    //   )
+    //   .then(res => {
+    //     console.log(res.data)
+    //   })
+    //   .catch(err => {
+    //     console.log(err)
+    //   })
   }
 
   return (
@@ -49,41 +52,12 @@ const Home = () => {
         <p>
           <a href="https://dserver/wiki">Back to my MediaWiki...</a>
         </p>
-        <h2>Enable/disable existing extensions</h2>
-        <form onSubmit={handleEnableDisableExtension}>
-          <Grid container spacing={3}>
-            <Grid item xs={6}>
-              <Box mb={1}>
-                <TextField
-                  name="extensionName"
-                  label="Extension Name"
-                  size="small"
-                  fullWidth
-                />
-              </Box>
-              <Button variant="contained" color="primary" type="submit">
-                Execute
-              </Button>
-            </Grid>
-            <Grid item xs={6}>
-              <FormControl component="fieldset">
-                <FormLabel component="legend">Mode</FormLabel>
-                <RadioGroup name="mode" defaultValue="disable">
-                  <FormControlLabel
-                    value="enable"
-                    control={<Radio />}
-                    label="enable"
-                  />
-                  <FormControlLabel
-                    value="disable"
-                    control={<Radio />}
-                    label="disable"
-                  />
-                </RadioGroup>
-              </FormControl>
-            </Grid>
-          </Grid>
-        </form>
+        <ManageExtensions
+          handleEnableDisableExtension={handleEnableDisableExtension}
+          handleExtensionName={handleExtensionName}
+          currentExtensionName={currentExtensionName}
+          extensionCatalogue={extensionCatalogue}
+        />
         <h2>Install new extensions</h2>
         <a href="https://packagist.org/explore/?type=mediawiki-extension">
           Browse <b>packagist.org/explore/?type=mediawiki-extension</b>
