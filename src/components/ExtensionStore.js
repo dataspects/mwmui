@@ -22,7 +22,10 @@ export default function ExtensionStore({
     <>
       <h2>Extension Store</h2>
       <p>
-        The extensions store is managed by MWStake's Extensions Vetting Group.
+        The extensions store is managed by MWStake's Extensions Vetting Group.{" "}
+        <a href="https://github.com/dataspects/mediawiki-manager/blob/main/catalogues/extensions.json">
+          See current extension catalogue.
+        </a>
       </p>
       <form onSubmit={handleManageExtension}>
         <Grid container spacing={3}>

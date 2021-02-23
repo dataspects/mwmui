@@ -20,8 +20,15 @@ export default function AppStore({
 }) {
   return (
     <>
-      <h2>App Store (pending)</h2>
-      <p>The app store is managed by MWStake's App Vetting Group.</p>
+      <h2>
+        App Store (<i>pending</i>)
+      </h2>
+      <p>
+        The app store is managed by MWStake's App Vetting Group.{" "}
+        <a href="https://github.com/dataspects/mediawiki-manager/blob/main/catalogues/apps.json">
+          See current apps catalogue.
+        </a>
+      </p>
       <form onSubmit={handleManageApp}>
         <Grid container spacing={3}>
           <Grid item xs={6}>
