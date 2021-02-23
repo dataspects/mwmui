@@ -1,5 +1,5 @@
 import React from "react"
-import { Grid } from "@material-ui/core"
+import { Grid, Paper, LinearProgress } from "@material-ui/core"
 import axios from "axios"
 import ExtensionsInDirectory from "../components/ExtensionsInDirectory"
 import ComposerjsonReq from "../components/ComposerjsonReq"
@@ -14,21 +14,27 @@ const Home = () => {
   const [wfLoadExtensions, setWfLoadExtensions] = React.useState([])
   const [extensionCatalogue, setExtensionCatalogue] = React.useState([])
   const [appCatalogue, setAppCatalogue] = React.useState([])
+  const [logOutput, setLogOutput] = React.useState("Log output...")
 
-  React.useEffect(() => {
+  const getExtensionsOverview = React.useCallback(() => {
     axios.get(`${process.env.API_URL}?action=overview`).then(res => {
       setExtensionsInDirectory(res.data.extensionsInDirectory)
       setComposerjsonReq(res.data.composerjsonReq)
       setWfLoadExtensions(res.data.wfLoadExtensions)
     })
+  }, [])
+
+  React.useEffect(() => {
+    getExtensionsOverview()
     axios.get(`${process.env.API_URL}?action=extensionCatalogue`).then(res => {
       setExtensionCatalogue(res.data.extensionCatalogue)
+      setLogOutput(res.data.status)
     })
     axios.get(`${process.env.API_URL}?action=appCatalogue`).then(res => {
-      console.log(res.data.appCatalogue)
       setAppCatalogue(res.data.appCatalogue)
+      setLogOutput(res.data.status)
     })
-  }, [])
+  }, [getExtensionsOverview])
 
   const [currentExtensionName, setCurrentExtensionName] = React.useState("")
   const handleExtensionName = event => {
@@ -38,12 +44,19 @@ const Home = () => {
   const handleManageExtension = event => {
     event.preventDefault()
     const { mode } = event.currentTarget.elements
+    setLogOutput(
+      <>
+        <span>Managing extension {currentExtensionName}...</span>
+        <LinearProgress />
+      </>
+    )
     axios
       .get(
         `${process.env.API_URL}?action=enableDisableExtension&mode=${mode.value}&extensionName=${currentExtensionName}`
       )
       .then(res => {
-        console.log(res.data)
+        getExtensionsOverview()
+        setLogOutput(res.data.status)
       })
       .catch(err => {
         console.log(err)
@@ -63,7 +76,7 @@ const Home = () => {
     //     `${process.env.API_URL}?action=enableDisableExtension&mode=${mode.value}&extensionName=${currentExtensionName}`
     //   )
     //   .then(res => {
-    //     console.log(res.data)
+    //     setLogOutput(JSON.stringify(res.data.status))
     //   })
     //   .catch(err => {
     //     console.log(err)
@@ -90,6 +103,9 @@ const Home = () => {
           currentAppName={currentAppName}
           appCatalogue={appCatalogue}
         />
+      </Grid>
+      <Grid item xs={12}>
+        <Paper>{logOutput}</Paper>
       </Grid>
       <Grid item xs={3}>
         <ExtensionsInDirectory extensionsInDirectory={extensionsInDirectory} />
