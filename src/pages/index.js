@@ -4,7 +4,7 @@ import axios from "axios"
 import ExtensionsInDirectory from "../components/ExtensionsInDirectory"
 import ComposerjsonReq from "../components/ComposerjsonReq"
 import WfLoadExtensions from "../components/WfLoadExtensions"
-import ManageExtensions from "../components/ManageExtensions"
+import ExtensionStore from "../components/ExtensionStore"
 
 const Home = () => {
   const [extensionsInDirectory, setExtensionsInDirectory] = React.useState([])
@@ -28,22 +28,19 @@ const Home = () => {
     setCurrentExtensionName(event.target.value)
   }
 
-  const handleEnableDisableExtension = event => {
+  const handleManageExtension = event => {
     event.preventDefault()
     const { mode } = event.currentTarget.elements
-    console.log(
-      `${process.env.API_URL}?action=enableDisableExtension&mode=${mode.value}&extensionName=${currentExtensionName}`
-    )
-    // axios
-    //   .get(
-    //     `${process.env.API_URL}?action=enableDisableExtension&mode=${mode.value}&extensionName=${currentExtensionName}`
-    //   )
-    //   .then(res => {
-    //     console.log(res.data)
-    //   })
-    //   .catch(err => {
-    //     console.log(err)
-    //   })
+    axios
+      .get(
+        `${process.env.API_URL}?action=enableDisableExtension&mode=${mode.value}&extensionName=${currentExtensionName}`
+      )
+      .then(res => {
+        console.log(res.data)
+      })
+      .catch(err => {
+        console.log(err)
+      })
   }
 
   return (
@@ -52,22 +49,13 @@ const Home = () => {
         <p>
           <a href="https://dserver/wiki">Back to my MediaWiki...</a>
         </p>
-        <ManageExtensions
-          handleEnableDisableExtension={handleEnableDisableExtension}
+        <ExtensionStore
+          handleManageExtension={handleManageExtension}
           handleExtensionName={handleExtensionName}
           currentExtensionName={currentExtensionName}
           extensionCatalogue={extensionCatalogue}
         />
-        <h2>Install new extensions</h2>
-        <a href="https://packagist.org/explore/?type=mediawiki-extension">
-          Browse <b>packagist.org/explore/?type=mediawiki-extension</b>
-        </a>
         <h2>App Store</h2>
-        <h2>Extension Store</h2>
-        <p>
-          Extensions catalogue certified/secured e.g. by MWStake's Extensions
-          Vetting Group
-        </p>
       </Grid>
       <Grid item xs={4}>
         <ExtensionsInDirectory extensionsInDirectory={extensionsInDirectory} />

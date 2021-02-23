@@ -4,7 +4,6 @@ import {
   Button,
   FormControl,
   FormControlLabel,
-  FormLabel,
   RadioGroup,
   Radio,
   Box,
@@ -13,31 +12,34 @@ import {
   InputLabel,
 } from "@material-ui/core"
 
-export default function ManageExtensions({
-  handleEnableDisableExtension,
+export default function ExtensionStore({
+  handleManageExtension,
   handleExtensionName,
   currentExtensionName,
   extensionCatalogue,
 }) {
   return (
     <>
-      <h2>Manage extensions</h2>
-      <form onSubmit={handleEnableDisableExtension}>
+      <h2>Extension Store</h2>
+      <p>
+        The extensions store is managed by MWStake's Extensions Vetting Group.
+      </p>
+      <form onSubmit={handleManageExtension}>
         <Grid container spacing={3}>
           <Grid item xs={4}>
             <Box mb={1}>
               <FormControl style={{ minWidth: "100%" }}>
-                <InputLabel id="select-exn">Extension Name</InputLabel>
+                <InputLabel id="select-exn">Select extension</InputLabel>
                 <Select
                   labelId="select-exn"
                   id="exn"
                   value={currentExtensionName}
                   onChange={handleExtensionName}
                 >
-                  {extensionCatalogue.map(ext => {
+                  {Object.keys(extensionCatalogue).map(key => {
                     return (
-                      <MenuItem key={ext.name} value={ext.name}>
-                        {ext.name}
+                      <MenuItem key={key} value={key}>
+                        {key}
                       </MenuItem>
                     )
                   })}
@@ -50,7 +52,6 @@ export default function ManageExtensions({
           </Grid>
           <Grid item xs={8}>
             <FormControl component="fieldset">
-              <FormLabel component="legend">Mode</FormLabel>
               <RadioGroup name="mode" defaultValue="disable">
                 <FormControlLabel
                   value="enable"
