@@ -1,5 +1,5 @@
 import React from "react"
-import { Grid, Paper, LinearProgress, Chip, Box } from "@material-ui/core"
+import { Link, Grid, Paper, LinearProgress, Chip, Box } from "@material-ui/core"
 import axios from "axios"
 import ExtensionsInDirectory from "../components/ExtensionsInDirectory"
 import ComposerjsonReq from "../components/ComposerjsonReq"
@@ -86,7 +86,7 @@ const Home = () => {
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
-        <a href="https://dserver/wiki">Back to my MediaWiki...</a>
+        <Link href="https://dserver/wiki">Back to my MediaWiki...</Link>
       </Grid>
       <Grid item xs={6}>
         <ExtensionStore

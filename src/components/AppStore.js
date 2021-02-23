@@ -10,6 +10,7 @@ import {
   Select,
   MenuItem,
   InputLabel,
+  Link,
 } from "@material-ui/core"
 
 export default function AppStore({
@@ -25,9 +26,9 @@ export default function AppStore({
       </h2>
       <p>
         The app store is managed by MWStake's App Vetting Group.{" "}
-        <a href="https://github.com/dataspects/mediawiki-manager/blob/main/catalogues/apps.json">
+        <Link href="https://github.com/dataspects/mediawiki-manager/blob/main/catalogues/apps.json">
           See current apps catalogue.
-        </a>
+        </Link>
       </p>
       <form onSubmit={handleManageApp}>
         <Grid container spacing={3}>
