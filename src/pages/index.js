@@ -4,13 +4,16 @@ import axios from "axios"
 import ExtensionsInDirectory from "../components/ExtensionsInDirectory"
 import ComposerjsonReq from "../components/ComposerjsonReq"
 import WfLoadExtensions from "../components/WfLoadExtensions"
+import Apps from "../components/Apps"
 import ExtensionStore from "../components/ExtensionStore"
+import AppStore from "../components/AppStore"
 
 const Home = () => {
   const [extensionsInDirectory, setExtensionsInDirectory] = React.useState([])
   const [composerjsonReq, setComposerjsonReq] = React.useState([])
   const [wfLoadExtensions, setWfLoadExtensions] = React.useState([])
   const [extensionCatalogue, setExtensionCatalogue] = React.useState([])
+  const [appCatalogue, setAppCatalogue] = React.useState([])
 
   React.useEffect(() => {
     axios.get(`${process.env.API_URL}?action=overview`).then(res => {
@@ -20,6 +23,10 @@ const Home = () => {
     })
     axios.get(`${process.env.API_URL}?action=extensionCatalogue`).then(res => {
       setExtensionCatalogue(res.data.extensionCatalogue)
+    })
+    axios.get(`${process.env.API_URL}?action=appCatalogue`).then(res => {
+      console.log(res.data.appCatalogue)
+      setAppCatalogue(res.data.appCatalogue)
     })
   }, [])
 
@@ -43,28 +50,58 @@ const Home = () => {
       })
   }
 
+  const [currentAppName, setCurrentAppName] = React.useState("")
+  const handleAppName = event => {
+    setCurrentAppName(event.target.value)
+  }
+
+  const handleManageApp = event => {
+    event.preventDefault()
+    // const { mode } = event.currentTarget.elements
+    // axios
+    //   .get(
+    //     `${process.env.API_URL}?action=enableDisableExtension&mode=${mode.value}&extensionName=${currentExtensionName}`
+    //   )
+    //   .then(res => {
+    //     console.log(res.data)
+    //   })
+    //   .catch(err => {
+    //     console.log(err)
+    //   })
+  }
+
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
-        <p>
-          <a href="https://dserver/wiki">Back to my MediaWiki...</a>
-        </p>
+        <a href="https://dserver/wiki">Back to my MediaWiki...</a>
+      </Grid>
+      <Grid item xs={6}>
         <ExtensionStore
           handleManageExtension={handleManageExtension}
           handleExtensionName={handleExtensionName}
           currentExtensionName={currentExtensionName}
           extensionCatalogue={extensionCatalogue}
         />
-        <h2>App Store</h2>
       </Grid>
-      <Grid item xs={4}>
+      <Grid item xs={6}>
+        <AppStore
+          handleManageApp={handleManageApp}
+          handleAppName={handleAppName}
+          currentAppName={currentAppName}
+          appCatalogue={appCatalogue}
+        />
+      </Grid>
+      <Grid item xs={3}>
         <ExtensionsInDirectory extensionsInDirectory={extensionsInDirectory} />
       </Grid>
-      <Grid item xs={4}>
+      <Grid item xs={3}>
         <ComposerjsonReq composerjsonReq={composerjsonReq} />
       </Grid>
-      <Grid item xs={4}>
+      <Grid item xs={3}>
         <WfLoadExtensions wfLoadExtensions={wfLoadExtensions} />
+      </Grid>
+      <Grid item xs={3}>
+        <Apps apps={{}} />
       </Grid>
     </Grid>
   )

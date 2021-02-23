@@ -12,31 +12,29 @@ import {
   InputLabel,
 } from "@material-ui/core"
 
-export default function ExtensionStore({
-  handleManageExtension,
-  handleExtensionName,
-  currentExtensionName,
-  extensionCatalogue,
+export default function AppStore({
+  handleManageApp,
+  handleAppName,
+  currentAppName,
+  appCatalogue,
 }) {
   return (
     <>
-      <h2>Extension Store</h2>
-      <p>
-        The extensions store is managed by MWStake's Extensions Vetting Group.
-      </p>
-      <form onSubmit={handleManageExtension}>
+      <h2>App Store (pending)</h2>
+      <p>The app store is managed by MWStake's App Vetting Group.</p>
+      <form onSubmit={handleManageApp}>
         <Grid container spacing={3}>
           <Grid item xs={6}>
             <Box mb={1}>
               <FormControl style={{ minWidth: "100%" }}>
-                <InputLabel id="select-exn">Select extension</InputLabel>
+                <InputLabel id="select-exn">Select app</InputLabel>
                 <Select
                   labelId="select-exn"
                   id="exn"
-                  value={currentExtensionName}
-                  onChange={handleExtensionName}
+                  value={currentAppName}
+                  onChange={handleAppName}
                 >
-                  {Object.keys(extensionCatalogue).map(key => {
+                  {Object.keys(appCatalogue).map(key => {
                     return (
                       <MenuItem key={key} value={key}>
                         {key}
