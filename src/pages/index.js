@@ -1,12 +1,5 @@
 import React from "react"
-import {
-  Grid,
-  Paper,
-  LinearProgress,
-  Chip,
-  Box,
-  Typography,
-} from "@material-ui/core"
+import { Grid, Paper, LinearProgress, Chip, Box } from "@material-ui/core"
 import AppBar from "@material-ui/core/AppBar"
 import Tabs from "@material-ui/core/Tabs"
 import Tab from "@material-ui/core/Tab"
@@ -28,6 +21,7 @@ const Home = () => {
   const [appCatalogue, setAppCatalogue] = React.useState([])
   const [snapshotCatalogue, setSnapshotCatalogue] = React.useState([])
   const [upgradesCatalogue, setUpgradesCatalogue] = React.useState({})
+  const [info, setInfo] = React.useState({})
   const [logOutput, setLogOutput] = React.useState("Log output...")
 
   const getExtensionsOverview = React.useCallback(() => {
@@ -56,8 +50,11 @@ const Home = () => {
       setLogOutput(res.data.status)
     })
     axios.get(`${process.env.API_URL}?action=upgradesCatalogue`).then(res => {
-      console.log(res.data)
       setUpgradesCatalogue(res.data.upgradesCatalogue)
+      setLogOutput(res.data.status)
+    })
+    axios.get(`${process.env.API_URL}?action=info`).then(res => {
+      setInfo(res.data.info)
       setLogOutput(res.data.status)
     })
     getSnapshotsCatalogue()
@@ -144,11 +141,7 @@ const Home = () => {
         aria-labelledby={`simple-tab-${index}`}
         {...other}
       >
-        {value === index && (
-          <Box p={3}>
-            <Typography>{children}</Typography>
-          </Box>
-        )}
+        {value === index && <Box p={3}>{children}</Box>}
       </div>
     )
   }
@@ -189,6 +182,7 @@ const Home = () => {
       <Grid item xs={12}>
         <AppBar position="static">
           <Tabs value={tabValue} onChange={handleTabChange}>
+            <Tab label="Info" />
             <Tab label="Upgrades" />
             <Tab label="Extensions" />
             <Tab label="Apps" />
@@ -196,9 +190,12 @@ const Home = () => {
           </Tabs>
         </AppBar>
         <TabPanel value={tabValue} index={0}>
-          Item One
+          <pre>{JSON.stringify(info, null, 2)}</pre>
         </TabPanel>
         <TabPanel value={tabValue} index={1}>
+          Item One
+        </TabPanel>
+        <TabPanel value={tabValue} index={2}>
           <Grid container spacing={3}>
             <Grid item xs={3}>
               <ExtensionsInDirectory
@@ -216,10 +213,10 @@ const Home = () => {
             </Grid>
           </Grid>
         </TabPanel>
-        <TabPanel value={tabValue} index={2}>
+        <TabPanel value={tabValue} index={3}>
           Item One
         </TabPanel>
-        <TabPanel value={tabValue} index={3}>
+        <TabPanel value={tabValue} index={4}>
           Item One
         </TabPanel>
       </Grid>
