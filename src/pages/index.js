@@ -27,6 +27,7 @@ const Home = () => {
   const [extensionCatalogue, setExtensionCatalogue] = React.useState([])
   const [appCatalogue, setAppCatalogue] = React.useState([])
   const [snapshotCatalogue, setSnapshotCatalogue] = React.useState([])
+  const [upgradesCatalogue, setUpgradesCatalogue] = React.useState({})
   const [logOutput, setLogOutput] = React.useState("Log output...")
 
   const getExtensionsOverview = React.useCallback(() => {
@@ -52,6 +53,11 @@ const Home = () => {
     })
     axios.get(`${process.env.API_URL}?action=appCatalogue`).then(res => {
       setAppCatalogue(res.data.appCatalogue)
+      setLogOutput(res.data.status)
+    })
+    axios.get(`${process.env.API_URL}?action=upgradesCatalogue`).then(res => {
+      console.log(res.data)
+      setUpgradesCatalogue(res.data.upgradesCatalogue)
       setLogOutput(res.data.status)
     })
     getSnapshotsCatalogue()
@@ -172,7 +178,7 @@ const Home = () => {
         />
       </Grid>
       <Grid item xs={6}>
-        <UpgradeManager />
+        <UpgradeManager upgradesCatalogue={upgradesCatalogue} />
       </Grid>
       <Grid item xs={6}>
         <SnapshotManager
