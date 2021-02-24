@@ -4,7 +4,7 @@ import { LinearProgress } from "@material-ui/core"
 export default function ExtensionsInDirectory({ extensionsInDirectory }) {
   return (
     <>
-      <h2>Extensions in Directory</h2>
+      <p>Extensions in Directory</p>
       {extensionsInDirectory &&
       Object.keys(extensionsInDirectory).length > 0 ? (
         <ul>

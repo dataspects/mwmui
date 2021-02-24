@@ -1,6 +1,6 @@
 import React from "react"
 import { Helmet } from "react-helmet"
-import { Grid, Box } from "@material-ui/core"
+import { Link, Grid, Box, Paper } from "@material-ui/core"
 import { ThemeProvider } from "@material-ui/core/styles"
 import Theme from "../theme"
 import CssBaseline from "@material-ui/core/CssBaseline"
@@ -26,10 +26,17 @@ export default function Layout({ children }) {
               {/* FIXME: this image doesn't use the path prefix, so I hacked a ui/ in front of it. */}
               <img src="/ui/images/dataspects.png" alt="dataspects" />
             </Grid>
-            <Grid item xs={10}>
+            <Grid item xs={8}>
               <Box m={3}>
                 <h1>MediaWiki Manager</h1>
               </Box>
+            </Grid>
+            <Grid item xs={2}>
+              <Paper>
+                {process.env.VERSION}
+                <br />
+                <Link href="https://dserver/wiki">Back to my MediaWiki...</Link>
+              </Paper>
             </Grid>
           </Grid>
           {children}

@@ -12,6 +12,7 @@ import {
   InputLabel,
   Link,
 } from "@material-ui/core"
+import AppsIcon from "@material-ui/icons/Apps"
 
 export default function AppStore({
   handleManageApp,
@@ -22,7 +23,7 @@ export default function AppStore({
   return (
     <>
       <h2>
-        App Store (<i>pending</i>)
+        <AppsIcon color="primary" /> App Store (<i>pending</i>)
       </h2>
       <p>
         The app store is managed by MWStake's App Vetting Group.{" "}

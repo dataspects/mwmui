@@ -12,6 +12,7 @@ import {
   InputLabel,
   Link,
 } from "@material-ui/core"
+import ExtensionIcon from "@material-ui/icons/Extension"
 
 export default function ExtensionStore({
   handleManageExtension,
@@ -21,7 +22,9 @@ export default function ExtensionStore({
 }) {
   return (
     <>
-      <h2>Extension Store</h2>
+      <h2>
+        <ExtensionIcon color="primary" /> Extension Store
+      </h2>
       <p>
         The extensions store is managed by MWStake's Extensions Vetting Group.{" "}
         <Link href="https://github.com/dataspects/mediawiki-manager/blob/main/catalogues/extensions.json">

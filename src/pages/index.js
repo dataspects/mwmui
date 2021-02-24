@@ -1,11 +1,23 @@
 import React from "react"
-import { Link, Grid, Paper, LinearProgress, Chip, Box } from "@material-ui/core"
+import {
+  Grid,
+  Paper,
+  LinearProgress,
+  Chip,
+  Box,
+  Typography,
+} from "@material-ui/core"
+import AppBar from "@material-ui/core/AppBar"
+import Tabs from "@material-ui/core/Tabs"
+import Tab from "@material-ui/core/Tab"
 import axios from "axios"
 import ExtensionsInDirectory from "../components/ExtensionsInDirectory"
 import ComposerjsonReq from "../components/ComposerjsonReq"
 import WfLoadExtensions from "../components/WfLoadExtensions"
 import Apps from "../components/Apps"
 import ExtensionStore from "../components/ExtensionStore"
+import UpgradeManager from "../components/UpgradeManager"
+import SnapshotManager from "../components/SnapshotManager"
 import AppStore from "../components/AppStore"
 
 const Home = () => {
@@ -14,6 +26,7 @@ const Home = () => {
   const [wfLoadExtensions, setWfLoadExtensions] = React.useState([])
   const [extensionCatalogue, setExtensionCatalogue] = React.useState([])
   const [appCatalogue, setAppCatalogue] = React.useState([])
+  const [snapshotCatalogue, setSnapshotCatalogue] = React.useState([])
   const [logOutput, setLogOutput] = React.useState("Log output...")
 
   const getExtensionsOverview = React.useCallback(() => {
@@ -21,6 +34,13 @@ const Home = () => {
       setExtensionsInDirectory(res.data.extensionsInDirectory)
       setComposerjsonReq(res.data.composerjsonReq)
       setWfLoadExtensions(res.data.wfLoadExtensions)
+    })
+  }, [])
+
+  const getSnapshotsCatalogue = React.useCallback(() => {
+    axios.get(`${process.env.API_URL}?action=snapshotCatalogue`).then(res => {
+      setSnapshotCatalogue(res.data.snapshotCatalogue)
+      setLogOutput(res.data.status)
     })
   }, [])
 
@@ -34,7 +54,8 @@ const Home = () => {
       setAppCatalogue(res.data.appCatalogue)
       setLogOutput(res.data.status)
     })
-  }, [getExtensionsOverview])
+    getSnapshotsCatalogue()
+  }, [getExtensionsOverview, getSnapshotsCatalogue])
 
   const [currentExtensionName, setCurrentExtensionName] = React.useState("")
   const handleExtensionName = event => {
@@ -83,10 +104,56 @@ const Home = () => {
     //   })
   }
 
+  const takeSnapshot = () => {
+    setLogOutput(
+      <>
+        <span>Taking snapshot...</span>
+        <LinearProgress />
+      </>
+    )
+    axios
+      .get(`${process.env.API_URL}?action=takeSnapshot`)
+      .then(res => {
+        setLogOutput(res.data.status)
+        getSnapshotsCatalogue()
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
+
+  const [tabValue, setTabValue] = React.useState(0)
+  const handleTabChange = (event, newValue) => {
+    setTabValue(newValue)
+  }
+
+  function TabPanel(props) {
+    const { children, value, index, ...other } = props
+
+    return (
+      <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`simple-tabpanel-${index}`}
+        aria-labelledby={`simple-tab-${index}`}
+        {...other}
+      >
+        {value === index && (
+          <Box p={3}>
+            <Typography>{children}</Typography>
+          </Box>
+        )}
+      </div>
+    )
+  }
+
   return (
-    <Grid container spacing={3}>
+    <Grid container spacing={5}>
       <Grid item xs={12}>
-        <Link href="https://dserver/wiki">Back to my MediaWiki...</Link>
+        <Chip label="Log Output" />
+        <Box m={2}>
+          <Paper>{logOutput}</Paper>
+        </Box>
       </Grid>
       <Grid item xs={6}>
         <ExtensionStore
@@ -104,23 +171,51 @@ const Home = () => {
           appCatalogue={appCatalogue}
         />
       </Grid>
+      <Grid item xs={6}>
+        <UpgradeManager />
+      </Grid>
+      <Grid item xs={6}>
+        <SnapshotManager
+          snapshotCatalogue={snapshotCatalogue}
+          takeSnapshot={takeSnapshot}
+        />
+      </Grid>
       <Grid item xs={12}>
-        <Chip label="Log Output" />
-        <Box m={2}>
-          <Paper>{logOutput}</Paper>
-        </Box>
-      </Grid>
-      <Grid item xs={3}>
-        <ExtensionsInDirectory extensionsInDirectory={extensionsInDirectory} />
-      </Grid>
-      <Grid item xs={3}>
-        <ComposerjsonReq composerjsonReq={composerjsonReq} />
-      </Grid>
-      <Grid item xs={3}>
-        <WfLoadExtensions wfLoadExtensions={wfLoadExtensions} />
-      </Grid>
-      <Grid item xs={3}>
-        <Apps apps={{}} />
+        <AppBar position="static">
+          <Tabs value={tabValue} onChange={handleTabChange}>
+            <Tab label="Upgrades" />
+            <Tab label="Extensions" />
+            <Tab label="Apps" />
+            <Tab label="Snapshots (Backups)" />
+          </Tabs>
+        </AppBar>
+        <TabPanel value={tabValue} index={0}>
+          Item One
+        </TabPanel>
+        <TabPanel value={tabValue} index={1}>
+          <Grid container spacing={3}>
+            <Grid item xs={3}>
+              <ExtensionsInDirectory
+                extensionsInDirectory={extensionsInDirectory}
+              />
+            </Grid>
+            <Grid item xs={3}>
+              <ComposerjsonReq composerjsonReq={composerjsonReq} />
+            </Grid>
+            <Grid item xs={3}>
+              <WfLoadExtensions wfLoadExtensions={wfLoadExtensions} />
+            </Grid>
+            <Grid item xs={3}>
+              <Apps apps={{}} />
+            </Grid>
+          </Grid>
+        </TabPanel>
+        <TabPanel value={tabValue} index={2}>
+          Item One
+        </TabPanel>
+        <TabPanel value={tabValue} index={3}>
+          Item One
+        </TabPanel>
       </Grid>
     </Grid>
   )

@@ -4,7 +4,7 @@ import { LinearProgress } from "@material-ui/core"
 export default function ComposerjsonReq({ composerjsonReq }) {
   return (
     <>
-      <h2>Required by composer.json</h2>
+      <p>Required by composer.json</p>
       {composerjsonReq && Object.keys(composerjsonReq).length > 0 ? (
         <ul>
           {Object.keys(composerjsonReq).map(key => {
