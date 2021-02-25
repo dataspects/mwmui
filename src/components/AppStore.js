@@ -26,7 +26,8 @@ export default function AppStore({
         <AppsIcon color="primary" /> App Store (<i>pending</i>)
       </h2>
       <p>
-        The app store is managed by MWStake's App Vetting Group.{" "}
+        The app store is managed by MWStake's App Vetting Group.
+        <br />
         <Link href="https://github.com/dataspects/mediawiki-manager/blob/main/catalogues/apps.json">
           See current apps catalogue.
         </Link>

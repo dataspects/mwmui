@@ -26,7 +26,8 @@ export default function ExtensionStore({
         <ExtensionIcon color="primary" /> Extension Store
       </h2>
       <p>
-        The extensions store is managed by MWStake's Extensions Vetting Group.{" "}
+        The extensions store is managed by MWStake's Extensions Vetting Group.
+        <br />
         <Link href="https://github.com/dataspects/mediawiki-manager/blob/main/catalogues/extensions.json">
           See current extension catalogue.
         </Link>

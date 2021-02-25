@@ -136,7 +136,7 @@ const Home = () => {
       })
   }
 
-  const [tabValue, setTabValue] = React.useState(1)
+  const [tabValue, setTabValue] = React.useState(0)
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue)
   }
@@ -217,16 +217,11 @@ const Home = () => {
       <Grid item xs={12}>
         <AppBar position="static">
           <Tabs value={tabValue} onChange={handleTabChange}>
-            <Tab label="Upgrades" />
             <Tab label="Extensions" />
             <Tab label="Apps" />
-            <Tab label="Snapshots (Backups)" />
           </Tabs>
         </AppBar>
         <TabPanel value={tabValue} index={0}>
-          Item One
-        </TabPanel>
-        <TabPanel value={tabValue} index={1}>
           <Grid container spacing={3}>
             <Grid item xs={3}>
               <ExtensionsByMWAPI extensionsByMWAPI={extensionsByMWAPI} />
@@ -244,11 +239,8 @@ const Home = () => {
             </Grid>
           </Grid>
         </TabPanel>
-        <TabPanel value={tabValue} index={2}>
+        <TabPanel value={tabValue} index={1}>
           <Apps apps={{}} />
-        </TabPanel>
-        <TabPanel value={tabValue} index={3}>
-          Item One
         </TabPanel>
       </Grid>
     </Grid>
