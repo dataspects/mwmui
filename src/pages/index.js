@@ -27,6 +27,13 @@ const Home = () => {
   const [upgradesCatalogue, setUpgradesCatalogue] = React.useState({})
   const [logOutput, setLogOutput] = React.useState("Log output...")
 
+  const getGeneralSiteInfo = React.useCallback(() => {
+    axios.get(`${process.env.API_URL}?action=generalSiteInfo`).then(res => {
+      setGeneralSiteInfo(res.data.generalSiteInfo)
+      setLogOutput(res.data.status)
+    })
+  }, [])
+
   const getExtensionsOverview = React.useCallback(() => {
     axios.get(`${process.env.API_URL}?action=overview`).then(res => {
       setExtensionsInDirectory(res.data.extensionsInDirectory)
@@ -60,12 +67,9 @@ const Home = () => {
       setExtensionsByMWAPI(res.data.extensionsByMWAPI)
       setLogOutput(res.data.status)
     })
-    axios.get(`${process.env.API_URL}?action=generalSiteInfo`).then(res => {
-      setGeneralSiteInfo(res.data.generalSiteInfo)
-      setLogOutput(res.data.status)
-    })
+    getGeneralSiteInfo()
     getSnapshotsCatalogue()
-  }, [getExtensionsOverview, getSnapshotsCatalogue])
+  }, [getExtensionsOverview, getSnapshotsCatalogue, getGeneralSiteInfo])
 
   const [currentExtensionName, setCurrentExtensionName] = React.useState("")
   const handleExtensionName = event => {
@@ -137,9 +141,8 @@ const Home = () => {
     setTabValue(newValue)
   }
 
-  function TabPanel(props) {
+  const TabPanel = props => {
     const { children, value, index, ...other } = props
-
     return (
       <div
         role="tabpanel"
@@ -151,6 +154,24 @@ const Home = () => {
         {value === index && <Box p={3}>{children}</Box>}
       </div>
     )
+  }
+
+  const handleUpgradeNow = () => {
+    setLogOutput(
+      <>
+        <span>Upgrading now...</span>
+        <LinearProgress />
+      </>
+    )
+    axios
+      .get(`${process.env.API_URL}?action=upgradeNow`)
+      .then(res => {
+        getGeneralSiteInfo()
+        setLogOutput(res.data.status)
+      })
+      .catch(err => {
+        console.log(err)
+      })
   }
 
   return (
@@ -184,6 +205,7 @@ const Home = () => {
         <UpgradeManager
           upgradesCatalogue={upgradesCatalogue}
           generalSiteInfo={generalSiteInfo}
+          handleUpgradeNow={handleUpgradeNow}
         />
       </Grid>
       <Grid item xs={6}>

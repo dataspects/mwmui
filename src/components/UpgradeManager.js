@@ -3,7 +3,11 @@ import { Button, Chip, Box } from "@material-ui/core"
 import SystemUpdateAltIcon from "@material-ui/icons/SystemUpdateAlt"
 import CloudDownloadIcon from "@material-ui/icons/CloudDownload"
 
-export default function UpgradeManager({ upgradesCatalogue, generalSiteInfo }) {
+export default function UpgradeManager({
+  upgradesCatalogue,
+  generalSiteInfo,
+  handleUpgradeNow,
+}) {
   return (
     <>
       <h2>
@@ -16,9 +20,11 @@ export default function UpgradeManager({ upgradesCatalogue, generalSiteInfo }) {
       </p>
       <table>
         <thead>
-          <th>Package Name</th>
-          <th>What's new?</th>
-          <th>Actions</th>
+          <tr>
+            <th>Package Name</th>
+            <th>What's new?</th>
+            <th>Actions</th>
+          </tr>
         </thead>
         <tbody>
           {Object.keys(upgradesCatalogue).map(key => {
@@ -33,18 +39,22 @@ export default function UpgradeManager({ upgradesCatalogue, generalSiteInfo }) {
                   />
                 </td>
                 <td>
-                  <pre>
+                  <div style={{ overflow: "scroll", whiteSpace: "pre-wrap" }}>
                     {JSON.stringify(upgradesCatalogue[key].comment, null, 2)}
-                  </pre>
+                  </div>
                 </td>
                 <td>
                   <Box p={1}>
-                    <Button variant="outlined" color="primary" type="submit">
+                    <Button variant="outlined" color="primary">
                       Check changes
                     </Button>
                   </Box>
                   <Box p={1}>
-                    <Button variant="contained" color="primary" type="submit">
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={handleUpgradeNow}
+                    >
                       Upgrade now
                     </Button>
                   </Box>

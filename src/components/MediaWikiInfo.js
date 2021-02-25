@@ -17,7 +17,7 @@ export default function MediaWikiInfo({ generalSiteInfo }) {
         <tbody>
           {show.map(aspect => {
             return (
-              <tr key={generalSiteInfo[aspect]}>
+              <tr key={aspect}>
                 <td>{aspect}</td>
                 <td>{generalSiteInfo[aspect]}</td>
               </tr>
