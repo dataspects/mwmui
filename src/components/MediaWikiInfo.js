@@ -10,6 +10,10 @@ export default function MediaWikiInfo({ generalSiteInfo }) {
     "dbtype",
     "dbversion",
     "maxuploadsize",
+    "time",
+    "timezone",
+    "mainpage",
+    "timeoffset",
   ].sort()
   return (
     <Paper>
