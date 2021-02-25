@@ -12,6 +12,19 @@ const theme = createMuiTheme({
     primary: blue,
   },
   overrides: {
+    MuiCssBaseline: {
+      "@global": {
+        td: {
+          verticalAlign: "top",
+          padding: "0px 50px 0px 0px",
+          textAlign: "left",
+        },
+        th: {
+          textAlign: "left",
+          padding: "0px 0px 10px 0px",
+        },
+      },
+    },
     MuiLink: {
       // See "Rule name" at https://material-ui.com/api/link/#css
       root: {

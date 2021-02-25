@@ -7,21 +7,24 @@ import axios from "axios"
 import ExtensionsInDirectory from "../components/ExtensionsInDirectory"
 import ComposerjsonReq from "../components/ComposerjsonReq"
 import WfLoadExtensions from "../components/WfLoadExtensions"
+import ExtensionsByMWAPI from "../components/ExtensionsByMWAPI"
 import Apps from "../components/Apps"
 import ExtensionStore from "../components/ExtensionStore"
 import UpgradeManager from "../components/UpgradeManager"
 import SnapshotManager from "../components/SnapshotManager"
 import AppStore from "../components/AppStore"
+import MediaWikiInfo from "../components/MediaWikiInfo"
 
 const Home = () => {
   const [extensionsInDirectory, setExtensionsInDirectory] = React.useState([])
   const [composerjsonReq, setComposerjsonReq] = React.useState([])
   const [wfLoadExtensions, setWfLoadExtensions] = React.useState([])
+  const [extensionsByMWAPI, setExtensionsByMWAPI] = React.useState([])
   const [extensionCatalogue, setExtensionCatalogue] = React.useState([])
+  const [generalSiteInfo, setGeneralSiteInfo] = React.useState([])
   const [appCatalogue, setAppCatalogue] = React.useState([])
   const [snapshotCatalogue, setSnapshotCatalogue] = React.useState([])
   const [upgradesCatalogue, setUpgradesCatalogue] = React.useState({})
-  const [info, setInfo] = React.useState({})
   const [logOutput, setLogOutput] = React.useState("Log output...")
 
   const getExtensionsOverview = React.useCallback(() => {
@@ -53,8 +56,12 @@ const Home = () => {
       setUpgradesCatalogue(res.data.upgradesCatalogue)
       setLogOutput(res.data.status)
     })
-    axios.get(`${process.env.API_URL}?action=info`).then(res => {
-      setInfo(res.data.info)
+    axios.get(`${process.env.API_URL}?action=extensionsByMWAPI`).then(res => {
+      setExtensionsByMWAPI(res.data.extensionsByMWAPI)
+      setLogOutput(res.data.status)
+    })
+    axios.get(`${process.env.API_URL}?action=generalSiteInfo`).then(res => {
+      setGeneralSiteInfo(res.data.generalSiteInfo)
       setLogOutput(res.data.status)
     })
     getSnapshotsCatalogue()
@@ -125,7 +132,7 @@ const Home = () => {
       })
   }
 
-  const [tabValue, setTabValue] = React.useState(0)
+  const [tabValue, setTabValue] = React.useState(1)
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue)
   }
@@ -148,11 +155,14 @@ const Home = () => {
 
   return (
     <Grid container spacing={5}>
-      <Grid item xs={12}>
+      <Grid item xs={6}>
         <Chip label="Log Output" />
         <Box m={2}>
           <Paper>{logOutput}</Paper>
         </Box>
+      </Grid>
+      <Grid item xs={6}>
+        <MediaWikiInfo generalSiteInfo={generalSiteInfo} />
       </Grid>
       <Grid item xs={6}>
         <ExtensionStore
@@ -171,7 +181,10 @@ const Home = () => {
         />
       </Grid>
       <Grid item xs={6}>
-        <UpgradeManager upgradesCatalogue={upgradesCatalogue} />
+        <UpgradeManager
+          upgradesCatalogue={upgradesCatalogue}
+          generalSiteInfo={generalSiteInfo}
+        />
       </Grid>
       <Grid item xs={6}>
         <SnapshotManager
@@ -182,7 +195,6 @@ const Home = () => {
       <Grid item xs={12}>
         <AppBar position="static">
           <Tabs value={tabValue} onChange={handleTabChange}>
-            <Tab label="Info" />
             <Tab label="Upgrades" />
             <Tab label="Extensions" />
             <Tab label="Apps" />
@@ -190,17 +202,12 @@ const Home = () => {
           </Tabs>
         </AppBar>
         <TabPanel value={tabValue} index={0}>
-          <pre>{JSON.stringify(info, null, 2)}</pre>
-        </TabPanel>
-        <TabPanel value={tabValue} index={1}>
           Item One
         </TabPanel>
-        <TabPanel value={tabValue} index={2}>
+        <TabPanel value={tabValue} index={1}>
           <Grid container spacing={3}>
             <Grid item xs={3}>
-              <ExtensionsInDirectory
-                extensionsInDirectory={extensionsInDirectory}
-              />
+              <ExtensionsByMWAPI extensionsByMWAPI={extensionsByMWAPI} />
             </Grid>
             <Grid item xs={3}>
               <ComposerjsonReq composerjsonReq={composerjsonReq} />
@@ -209,14 +216,16 @@ const Home = () => {
               <WfLoadExtensions wfLoadExtensions={wfLoadExtensions} />
             </Grid>
             <Grid item xs={3}>
-              <Apps apps={{}} />
+              <ExtensionsInDirectory
+                extensionsInDirectory={extensionsInDirectory}
+              />
             </Grid>
           </Grid>
         </TabPanel>
-        <TabPanel value={tabValue} index={3}>
-          Item One
+        <TabPanel value={tabValue} index={2}>
+          <Apps apps={{}} />
         </TabPanel>
-        <TabPanel value={tabValue} index={4}>
+        <TabPanel value={tabValue} index={3}>
           Item One
         </TabPanel>
       </Grid>
