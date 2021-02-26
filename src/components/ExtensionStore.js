@@ -10,9 +10,28 @@ import {
   Select,
   MenuItem,
   InputLabel,
-  Link,
+  Modal,
+  Chip,
+  Avatar,
 } from "@material-ui/core"
+import ExtensionCatalogue from "../components/ExtensionCatalogue"
 import ExtensionIcon from "@material-ui/icons/Extension"
+import { makeStyles } from "@material-ui/core/styles"
+
+const useStyles = makeStyles(theme => ({
+  modalExtensionCatalogue: {
+    position: "absolute",
+    backgroundColor: theme.palette.background.paper,
+    border: "2px solid #000",
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+    overflowY: "scroll",
+    top: "50px",
+    right: "50px",
+    left: "50px",
+    bottom: "50px",
+  },
+}))
 
 export default function ExtensionStore({
   handleManageExtension,
@@ -20,18 +39,40 @@ export default function ExtensionStore({
   currentExtensionName,
   extensionCatalogue,
 }) {
+  const classes = useStyles()
+  const [
+    modalExtensionCatalogueOpen,
+    setModalExtensionCatalogueOpen,
+  ] = React.useState(false)
+
+  const handleModalExtensionCatalogueOpen = () => {
+    setModalExtensionCatalogueOpen(true)
+  }
+
+  const handleModalExtensionCatalogueClose = () => {
+    setModalExtensionCatalogueOpen(false)
+  }
   return (
     <>
       <h2>
-        <ExtensionIcon color="primary" /> Extension Store
+        <ExtensionIcon color="primary" /> Extension Store{" "}
+        <Chip
+          label={"View MWStake Certified Extensions Catalogue..."}
+          onClick={handleModalExtensionCatalogueOpen}
+          avatar={<Avatar alt="MWStake" src="/images/mwstake.png" />}
+          variant="outlined"
+          color="primary"
+        />
       </h2>
-      <p>
-        The extensions store is managed by MWStake's Extensions Vetting Group.
-        <br />
-        <Link href="https://github.com/dataspects/mediawiki-manager/blob/main/catalogues/extensions.json">
-          See current extension catalogue.
-        </Link>
-      </p>
+
+      <Modal
+        open={modalExtensionCatalogueOpen}
+        onClose={handleModalExtensionCatalogueClose}
+      >
+        <div className={classes.modalExtensionCatalogue}>
+          <ExtensionCatalogue />
+        </div>
+      </Modal>
       <form onSubmit={handleManageExtension}>
         <Grid container spacing={3}>
           <Grid item xs={6}>
