@@ -17,6 +17,7 @@ import {
 import ExtensionCatalogue from "../components/ExtensionCatalogue"
 import ExtensionIcon from "@material-ui/icons/Extension"
 import { makeStyles } from "@material-ui/core/styles"
+import axios from "axios"
 
 const useStyles = makeStyles(theme => ({
   modalExtensionCatalogue: {
@@ -27,8 +28,8 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(2, 4, 3),
     overflowY: "scroll",
     top: "50px",
-    right: "50px",
-    left: "50px",
+    right: "100px",
+    left: "300px",
     bottom: "50px",
   },
 }))
@@ -40,18 +41,31 @@ export default function ExtensionStore({
   extensionCatalogue,
 }) {
   const classes = useStyles()
+
+  const [
+    mwstakeExtensionCatalogue,
+    setMwstakeExtensionCatalogue,
+  ] = React.useState([])
   const [
     modalExtensionCatalogueOpen,
     setModalExtensionCatalogueOpen,
   ] = React.useState(false)
 
   const handleModalExtensionCatalogueOpen = () => {
+    axios
+      .get(
+        `https://raw.githubusercontent.com/dataspects/mediawiki-manager/main/catalogues/extensions.json`
+      )
+      .then(res => {
+        setMwstakeExtensionCatalogue(res.data)
+      })
     setModalExtensionCatalogueOpen(true)
   }
 
   const handleModalExtensionCatalogueClose = () => {
     setModalExtensionCatalogueOpen(false)
   }
+
   return (
     <>
       <h2>
@@ -70,7 +84,9 @@ export default function ExtensionStore({
         onClose={handleModalExtensionCatalogueClose}
       >
         <div className={classes.modalExtensionCatalogue}>
-          <ExtensionCatalogue />
+          <ExtensionCatalogue
+            mwstakeExtensionCatalogue={mwstakeExtensionCatalogue}
+          />
         </div>
       </Modal>
       <form onSubmit={handleManageExtension}>
