@@ -1,12 +1,5 @@
 import React from "react"
-import {
-  Grid,
-  Paper,
-  LinearProgress,
-  Link,
-  Box,
-  Typography,
-} from "@material-ui/core"
+import { Grid, Box, Chip } from "@material-ui/core"
 import AppBar from "@material-ui/core/AppBar"
 import Tabs from "@material-ui/core/Tabs"
 import Tab from "@material-ui/core/Tab"
@@ -20,10 +13,17 @@ import ExtensionStore from "../components/ExtensionStore"
 import UpgradeManager from "../components/UpgradeManager"
 import SnapshotManager from "../components/SnapshotManager"
 import AppStore from "../components/AppStore"
+import Help from "../components/Help"
 import MediaWikiInfo from "../components/MediaWikiInfo"
 import ShortTextIcon from "@material-ui/icons/ShortText"
+import { makeStyles } from "@material-ui/core/styles"
+
+const useStyles = makeStyles(theme => ({
+  logStack: { height: "100px", overflowY: "scroll", fontFamily: "monospace" },
+}))
 
 const Home = () => {
+  const classes = useStyles()
   const [extensionsInDirectory, setExtensionsInDirectory] = React.useState([])
   const [composerjsonReq, setComposerjsonReq] = React.useState([])
   const [wfLoadExtensions, setWfLoadExtensions] = React.useState([])
@@ -33,12 +33,12 @@ const Home = () => {
   const [appCatalogue, setAppCatalogue] = React.useState([])
   const [snapshotCatalogue, setSnapshotCatalogue] = React.useState([])
   const [upgradesCatalogue, setUpgradesCatalogue] = React.useState({})
-  const [logOutput, setLogOutput] = React.useState("Log output...")
+  const [logStack, setLogStack] = React.useState([])
 
   const getGeneralSiteInfo = React.useCallback(() => {
     axios.get(`${process.env.API_URL}?action=generalSiteInfo`).then(res => {
       setGeneralSiteInfo(res.data.generalSiteInfo)
-      setLogOutput(res.data.status)
+      addToLogStack(Date.now(), res.data.status)
     })
   }, [])
 
@@ -53,29 +53,29 @@ const Home = () => {
   const getSnapshotsCatalogue = React.useCallback(() => {
     axios.get(`${process.env.API_URL}?action=snapshotCatalogue`).then(res => {
       setSnapshotCatalogue(res.data.snapshotCatalogue)
-      setLogOutput(res.data.status)
+      addToLogStack(Date.now(), res.data.status)
     })
   }, [])
 
   React.useEffect(() => {
     getExtensionsOverview()
+    getGeneralSiteInfo()
     axios.get(`${process.env.API_URL}?action=extensionCatalogue`).then(res => {
       setExtensionCatalogue(res.data.extensionCatalogue)
-      setLogOutput(res.data.status)
+      addToLogStack(Date.now(), res.data.status)
     })
     axios.get(`${process.env.API_URL}?action=appCatalogue`).then(res => {
       setAppCatalogue(res.data.appCatalogue)
-      setLogOutput(res.data.status)
+      addToLogStack(Date.now(), res.data.status)
     })
     axios.get(`${process.env.API_URL}?action=upgradesCatalogue`).then(res => {
       setUpgradesCatalogue(res.data.upgradesCatalogue)
-      setLogOutput(res.data.status)
+      addToLogStack(Date.now(), res.data.status)
     })
     axios.get(`${process.env.API_URL}?action=extensionsByMWAPI`).then(res => {
       setExtensionsByMWAPI(res.data.extensionsByMWAPI)
-      setLogOutput(res.data.status)
+      addToLogStack(Date.now(), res.data.status)
     })
-    getGeneralSiteInfo()
     getSnapshotsCatalogue()
   }, [getExtensionsOverview, getSnapshotsCatalogue, getGeneralSiteInfo])
 
@@ -87,11 +87,9 @@ const Home = () => {
   const handleManageExtension = event => {
     event.preventDefault()
     const { mode } = event.currentTarget.elements
-    setLogOutput(
-      <>
-        <span>Managing extension {currentExtensionName}...</span>
-        <LinearProgress />
-      </>
+    addToLogStack(
+      Date.now(),
+      "Managing extension " + { currentExtensionName } + "..."
     )
     axios
       .get(
@@ -99,7 +97,7 @@ const Home = () => {
       )
       .then(res => {
         getExtensionsOverview()
-        setLogOutput(res.data.status)
+        addToLogStack(Date.now(), res.data.status)
       })
       .catch(err => {
         console.log(err)
@@ -119,7 +117,7 @@ const Home = () => {
     //     `${process.env.API_URL}?action=enableDisableExtension&mode=${mode.value}&extensionName=${currentExtensionName}`
     //   )
     //   .then(res => {
-    //     setLogOutput(JSON.stringify(res.data.status))
+    //     addToLogStack(Date.now(), JSON.stringify(res.data.status))
     //   })
     //   .catch(err => {
     //     console.log(err)
@@ -127,16 +125,11 @@ const Home = () => {
   }
 
   const takeSnapshot = () => {
-    setLogOutput(
-      <>
-        <span>Taking snapshot...</span>
-        <LinearProgress />
-      </>
-    )
+    addToLogStack(Date.now(), "Taking snapshot...")
     axios
       .get(`${process.env.API_URL}?action=takeSnapshot`)
       .then(res => {
-        setLogOutput(res.data.status)
+        addToLogStack(Date.now(), res.data.status)
         getSnapshotsCatalogue()
       })
       .catch(err => {
@@ -165,72 +158,55 @@ const Home = () => {
   }
 
   const handleUpgradeNow = () => {
-    setLogOutput(
-      <>
-        <span>Upgrading now...</span>
-        <LinearProgress />
-      </>
-    )
+    addToLogStack(Date.now(), "Upgrading now...")
     axios
       .get(`${process.env.API_URL}?action=upgradeNow`)
       .then(res => {
         getGeneralSiteInfo()
-        setLogOutput(res.data.status)
+        addToLogStack(Date.now(), res.data.status)
       })
       .catch(err => {
         console.log(err)
       })
   }
+  const logStackRef = React.useRef({})
+  const addToLogStack = (timestamp, item) => {
+    setLogStack(logStack => [
+      ...logStack,
+      {
+        ts: new Intl.DateTimeFormat("en-US", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+        }).format(timestamp),
+        item: item,
+      },
+    ])
+  }
+
+  React.useEffect(() => {
+    logStackRef.current.scrollTop = logStackRef.current.scrollHeight
+  }, [logStack])
 
   return (
     <Grid container spacing={5}>
       <Grid item xs={6}>
-        <Typography variant="body1" gutterBottom>
-          <Paper>
-            <Box p={2}>
-              <b>Current features</b>:
-              <ol>
-                <li>
-                  Interacts solely with /w and api.php and can therefore be
-                  installed alongside any existing MW
-                  <br />
-                  (no extensions involved)
-                </li>
-                <li>Enable (install) and disable extensions</li>
-                <li>
-                  Take <Link href="https://restic.net/">restic</Link> backups
-                </li>
-                <li>Upgrade to new certified/vetted packages</li>
-              </ol>
-              <b>Planned features</b>: install/enable/disable ontologies,
-              idempotency, rollbacks, cloning, smart upgrades (i.e.{" "}
-              <i style={{ backgroundColor: "lightgreen" }}>
-                only suggest what works with your system profile
-              </i>
+        <Help />
+        <Box mt={2}>
+          <Chip label="Log" icon={<ShortTextIcon />} />
+          <Box ref={logStackRef} ml={2} mt={1} className={classes.logStack}>
+            {logStack.map(item => {
+              return (
+                <div key={item.ts + item.item}>
+                  {item.ts}: {item.item}
+                </div>
               )
-              <Box mt={2}>
-                <img
-                  src="images/git.png"
-                  alt="git"
-                  style={{ height: "20px", verticalAlign: "middle" }}
-                />{" "}
-                <Link href="https://github.com/dataspects/mediawiki-manager">
-                  mediawiki-manager
-                </Link>
-                {" | "}
-                <Link href="https://github.com/dataspects/mwmui">mwmui</Link>
-              </Box>
-            </Box>
-          </Paper>
-        </Typography>
-
-        <Typography variant="body1" gutterBottom>
-          <Paper>
-            <Box p={2}>
-              <ShortTextIcon /> {logOutput}
-            </Box>
-          </Paper>
-        </Typography>
+            })}
+          </Box>
+        </Box>
       </Grid>
       <Grid item xs={6}>
         <MediaWikiInfo generalSiteInfo={generalSiteInfo} />
