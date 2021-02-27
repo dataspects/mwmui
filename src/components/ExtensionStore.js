@@ -17,7 +17,6 @@ import {
 import ExtensionCatalogue from "../components/ExtensionCatalogue"
 import ExtensionIcon from "@material-ui/icons/Extension"
 import { makeStyles } from "@material-ui/core/styles"
-import axios from "axios"
 
 const useStyles = makeStyles(theme => ({
   modalExtensionCatalogue: {
@@ -27,10 +26,10 @@ const useStyles = makeStyles(theme => ({
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
     overflowY: "scroll",
-    top: "50px",
+    top: "100px",
     right: "100px",
-    left: "300px",
-    bottom: "50px",
+    left: "100px",
+    bottom: "100px",
   },
 }))
 
@@ -43,22 +42,11 @@ export default function ExtensionStore({
   const classes = useStyles()
 
   const [
-    mwstakeExtensionCatalogue,
-    setMwstakeExtensionCatalogue,
-  ] = React.useState([])
-  const [
     modalExtensionCatalogueOpen,
     setModalExtensionCatalogueOpen,
   ] = React.useState(false)
 
   const handleModalExtensionCatalogueOpen = () => {
-    axios
-      .get(
-        `https://raw.githubusercontent.com/dataspects/mediawiki-manager/main/catalogues/extensions.json`
-      )
-      .then(res => {
-        setMwstakeExtensionCatalogue(res.data)
-      })
     setModalExtensionCatalogueOpen(true)
   }
 
@@ -84,9 +72,7 @@ export default function ExtensionStore({
         onClose={handleModalExtensionCatalogueClose}
       >
         <div className={classes.modalExtensionCatalogue}>
-          <ExtensionCatalogue
-            mwstakeExtensionCatalogue={mwstakeExtensionCatalogue}
-          />
+          <ExtensionCatalogue extensionCatalogue={extensionCatalogue} />
         </div>
       </Modal>
       <form onSubmit={handleManageExtension}>
@@ -101,13 +87,14 @@ export default function ExtensionStore({
                   value={currentExtensionName}
                   onChange={handleExtensionName}
                 >
-                  {Object.keys(extensionCatalogue).map(key => {
-                    return (
-                      <MenuItem key={key} value={key}>
-                        {key}
-                      </MenuItem>
-                    )
-                  })}
+                  {extensionCatalogue &&
+                    Object.keys(extensionCatalogue).map(key => {
+                      return (
+                        <MenuItem key={key} value={key}>
+                          {extensionCatalogue[key].name}
+                        </MenuItem>
+                      )
+                    })}
                 </Select>
               </FormControl>
             </Box>
