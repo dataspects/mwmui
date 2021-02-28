@@ -17,12 +17,7 @@ import Help from "../components/Help"
 import Log from "../components/Log"
 import MediaWikiInfo from "../components/MediaWikiInfo"
 
-import { makeStyles } from "@material-ui/core/styles"
-
-const useStyles = makeStyles(theme => ({}))
-
 const Home = () => {
-  const classes = useStyles()
   const [extensionsInDirectory, setExtensionsInDirectory] = React.useState([])
   const [composerjsonReq, setComposerjsonReq] = React.useState([])
   const [wfLoadExtensions, setWfLoadExtensions] = React.useState([])
