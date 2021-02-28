@@ -32,7 +32,7 @@ const Home = () => {
   const getGeneralSiteInfo = React.useCallback(() => {
     axios.get(`${process.env.API_URL}?action=generalSiteInfo`).then(res => {
       setGeneralSiteInfo(res.data.generalSiteInfo)
-      addToLogStack(Date.now(), res.data.status)
+      addToLogStack(res.data.status)
     })
   }, [])
 
@@ -47,7 +47,7 @@ const Home = () => {
   const getSnapshotsCatalogue = React.useCallback(() => {
     axios.get(`${process.env.API_URL}?action=snapshotCatalogue`).then(res => {
       setSnapshotCatalogue(res.data.snapshotCatalogue)
-      addToLogStack(Date.now(), res.data.status)
+      addToLogStack(res.data.status)
     })
   }, [])
 
@@ -56,19 +56,19 @@ const Home = () => {
     getGeneralSiteInfo()
     axios.get(`${process.env.API_URL}?action=extensionCatalogue`).then(res => {
       setExtensionCatalogue(res.data.extensionCatalogue)
-      addToLogStack(Date.now(), res.data.status)
+      addToLogStack(res.data.status)
     })
     axios.get(`${process.env.API_URL}?action=appCatalogue`).then(res => {
       setAppCatalogue(res.data.appCatalogue)
-      addToLogStack(Date.now(), res.data.status)
+      addToLogStack(res.data.status)
     })
     axios.get(`${process.env.API_URL}?action=upgradesCatalogue`).then(res => {
       setUpgradesCatalogue(res.data.upgradesCatalogue)
-      addToLogStack(Date.now(), res.data.status)
+      addToLogStack(res.data.status)
     })
     axios.get(`${process.env.API_URL}?action=extensionsByMWAPI`).then(res => {
       setExtensionsByMWAPI(res.data.extensionsByMWAPI)
-      addToLogStack(Date.now(), res.data.status)
+      addToLogStack(res.data.status)
     })
     getSnapshotsCatalogue()
   }, [getExtensionsOverview, getSnapshotsCatalogue, getGeneralSiteInfo])
@@ -91,7 +91,7 @@ const Home = () => {
       )
       .then(res => {
         getExtensionsOverview()
-        addToLogStack(Date.now(), res.data.status)
+        addToLogStack(res.data.status)
       })
       .catch(err => {
         console.log(err)
@@ -111,7 +111,7 @@ const Home = () => {
     //     `${process.env.API_URL}?action=enableDisableExtension&mode=${mode.value}&extensionName=${currentExtensionName}`
     //   )
     //   .then(res => {
-    //     addToLogStack(Date.now(), JSON.stringify(res.data.status))
+    //     addToLogStack(JSON.stringify(res.data.status))
     //   })
     //   .catch(err => {
     //     console.log(err)
@@ -119,11 +119,11 @@ const Home = () => {
   }
 
   const takeSnapshot = () => {
-    addToLogStack(Date.now(), "Taking snapshot...")
+    addToLogStack("Taking snapshot...")
     axios
       .get(`${process.env.API_URL}?action=takeSnapshot`)
       .then(res => {
-        addToLogStack(Date.now(), res.data.status)
+        addToLogStack(res.data.status)
         getSnapshotsCatalogue()
       })
       .catch(err => {
@@ -152,33 +152,20 @@ const Home = () => {
   }
 
   const handleUpgradeNow = () => {
-    addToLogStack(Date.now(), "Upgrading now...")
+    addToLogStack("Upgrading now...")
     axios
       .get(`${process.env.API_URL}?action=upgradeNow`)
       .then(res => {
         getGeneralSiteInfo()
-        addToLogStack(Date.now(), res.data.status)
+        addToLogStack(res.data.status)
       })
       .catch(err => {
         console.log(err)
       })
   }
   const logStackRef = React.useRef({})
-  const addToLogStack = (timestamp, item) => {
-    setLogStack(logStack => [
-      ...logStack,
-      {
-        ts: new Intl.DateTimeFormat("en-US", {
-          year: "numeric",
-          month: "2-digit",
-          day: "2-digit",
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-        }).format(timestamp),
-        item: item,
-      },
-    ])
+  const addToLogStack = item => {
+    setLogStack(logStack => [...logStack, item])
   }
 
   React.useEffect(() => {

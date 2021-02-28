@@ -2,6 +2,7 @@ import React from "react"
 import { Typography, Button, Box, Chip, Modal } from "@material-ui/core"
 import ShortTextIcon from "@material-ui/icons/ShortText"
 import { makeStyles } from "@material-ui/core/styles"
+import axios from "axios"
 const useStyles = makeStyles(theme => ({
   logStack: {
     height: "100px",
@@ -24,10 +25,18 @@ const useStyles = makeStyles(theme => ({
 }))
 const Log = ({ logStackRef, logStack }) => {
   const classes = useStyles()
+
+  const [logFile, setLogFile] = React.useState("")
+  const [logContent, setLogContent] = React.useState("")
+
   const [modalLogOpen, setModalLogOpen] = React.useState(false)
 
   const handleModalLogOpen = () => {
-    setModalLogOpen(true)
+    axios.get(`${process.env.API_URL}?action=viewLog`).then(res => {
+      setLogFile(res.data.file)
+      setLogContent(res.data.content)
+      setModalLogOpen(true)
+    })
   }
 
   const handleModalLogClose = () => {
@@ -44,15 +53,12 @@ const Log = ({ logStackRef, logStack }) => {
           <Typography variant="h5" gutterBottom>
             Log
           </Typography>
+          ({logFile})<pre>{logContent}</pre>
         </div>
       </Modal>
       <Box ref={logStackRef} ml={2} mt={1} className={classes.logStack}>
         {logStack.map(item => {
-          return (
-            <div key={item.ts + item.item}>
-              {item.ts}: {item.item}
-            </div>
-          )
+          return <div key={item}>{item}</div>
         })}
       </Box>
     </>
