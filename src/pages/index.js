@@ -81,10 +81,8 @@ const Home = () => {
   const handleManageExtension = event => {
     event.preventDefault()
     const { mode } = event.currentTarget.elements
-    addToLogStack(
-      Date.now(),
-      "Managing extension " + { currentExtensionName } + "..."
-    )
+    console.log(currentExtensionName)
+    addToLogStack(`Managing extension ${currentExtensionName}...`)
     axios
       .get(
         `${process.env.API_URL}?action=enableDisableExtension&mode=${mode.value}&extensionName=${currentExtensionName}`
