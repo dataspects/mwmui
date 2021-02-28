@@ -18,9 +18,9 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(2, 4, 3),
     overflowY: "scroll",
     top: "100px",
-    right: "100px",
-    left: "100px",
-    bottom: "100px",
+    right: "10px",
+    left: "20%",
+    bottom: "10px",
   },
 }))
 const Log = ({ logStackRef, logStack }) => {
