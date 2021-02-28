@@ -1,5 +1,5 @@
 import React from "react"
-import { Grid, Box, Chip } from "@material-ui/core"
+import { Grid, Box, Paper } from "@material-ui/core"
 import AppBar from "@material-ui/core/AppBar"
 import Tabs from "@material-ui/core/Tabs"
 import Tab from "@material-ui/core/Tab"
@@ -14,13 +14,12 @@ import UpgradeManager from "../components/UpgradeManager"
 import SnapshotManager from "../components/SnapshotManager"
 import AppStore from "../components/AppStore"
 import Help from "../components/Help"
+import Log from "../components/Log"
 import MediaWikiInfo from "../components/MediaWikiInfo"
-import ShortTextIcon from "@material-ui/icons/ShortText"
+
 import { makeStyles } from "@material-ui/core/styles"
 
-const useStyles = makeStyles(theme => ({
-  logStack: { height: "100px", overflowY: "scroll", fontFamily: "monospace" },
-}))
+const useStyles = makeStyles(theme => ({}))
 
 const Home = () => {
   const classes = useStyles()
@@ -194,18 +193,13 @@ const Home = () => {
   return (
     <Grid container spacing={5}>
       <Grid item xs={6}>
-        <Help />
-        <Box mt={2}>
-          <Chip label="Log" icon={<ShortTextIcon />} />
-          <Box ref={logStackRef} ml={2} mt={1} className={classes.logStack}>
-            {logStack.map(item => {
-              return (
-                <div key={item.ts + item.item}>
-                  {item.ts}: {item.item}
-                </div>
-              )
-            })}
+        <Paper>
+          <Box p={2}>
+            <Help />
           </Box>
+        </Paper>
+        <Box mt={2}>
+          <Log logStackRef={logStackRef} logStack={logStack} />
         </Box>
       </Grid>
       <Grid item xs={6}>
