@@ -27,9 +27,9 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(2, 4, 3),
     overflowY: "scroll",
     top: "100px",
-    right: "100px",
-    left: "100px",
-    bottom: "100px",
+    right: "10px",
+    left: "20%",
+    bottom: "10px",
   },
 }))
 
@@ -90,7 +90,10 @@ export default function ExtensionStore({
                   {extensionCatalogue &&
                     Object.keys(extensionCatalogue).map(key => {
                       return (
-                        <MenuItem key={key} value={key}>
+                        <MenuItem
+                          key={key}
+                          value={extensionCatalogue[key].name}
+                        >
                           {extensionCatalogue[key].name}
                         </MenuItem>
                       )
