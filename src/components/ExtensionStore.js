@@ -17,9 +17,13 @@ import {
 import ExtensionCatalogue from "../components/ExtensionCatalogue"
 import ExtensionIcon from "@material-ui/icons/Extension"
 import { makeStyles } from "@material-ui/core/styles"
+import ExtensionsInDirectory from "../components/ExtensionsInDirectory"
+import ComposerjsonReq from "../components/ComposerjsonReq"
+import WfLoadExtensions from "../components/WfLoadExtensions"
+import ExtensionsByMWAPI from "../components/ExtensionsByMWAPI"
 
 const useStyles = makeStyles(theme => ({
-  modalExtensionCatalogue: {
+  modal: {
     position: "absolute",
     backgroundColor: theme.palette.background.paper,
     border: "2px solid #000",
@@ -38,6 +42,12 @@ export default function ExtensionStore({
   handleExtensionName,
   currentExtensionName,
   extensionCatalogue,
+  extensionsByMWAPI,
+  composerjsonReq,
+  wfLoadExtensions,
+  extensionsInDirectory,
+  getExtensionsOverview,
+  getExtensionsByMWAPI,
 }) {
   const classes = useStyles()
 
@@ -47,11 +57,26 @@ export default function ExtensionStore({
   ] = React.useState(false)
 
   const handleModalExtensionCatalogueOpen = () => {
+    getExtensionsOverview()
+    getExtensionsByMWAPI()
     setModalExtensionCatalogueOpen(true)
   }
 
   const handleModalExtensionCatalogueClose = () => {
     setModalExtensionCatalogueOpen(false)
+  }
+
+  const [
+    modalInstalledExtensionsOpen,
+    setModalInstalledExtensionsOpen,
+  ] = React.useState(false)
+
+  const handleModalInstalledExtensionsOpen = () => {
+    setModalInstalledExtensionsOpen(true)
+  }
+
+  const handleModalInstalledExtensionsClose = () => {
+    setModalInstalledExtensionsOpen(false)
   }
 
   return (
@@ -64,15 +89,42 @@ export default function ExtensionStore({
           avatar={<Avatar alt="MWStake" src="/images/mwstake.png" />}
           variant="outlined"
           color="primary"
+        />{" "}
+        <Chip
+          label={"Check installed extensions..."}
+          onClick={handleModalInstalledExtensionsOpen}
+          variant="outlined"
         />
       </h2>
-
       <Modal
         open={modalExtensionCatalogueOpen}
         onClose={handleModalExtensionCatalogueClose}
       >
-        <div className={classes.modalExtensionCatalogue}>
+        <div className={classes.modal}>
           <ExtensionCatalogue extensionCatalogue={extensionCatalogue} />
+        </div>
+      </Modal>
+      <Modal
+        open={modalInstalledExtensionsOpen}
+        onClose={handleModalInstalledExtensionsClose}
+      >
+        <div className={classes.modal}>
+          <Grid container spacing={3}>
+            <Grid item xs={3}>
+              <ExtensionsByMWAPI extensionsByMWAPI={extensionsByMWAPI} />
+            </Grid>
+            <Grid item xs={3}>
+              <ComposerjsonReq composerjsonReq={composerjsonReq} />
+            </Grid>
+            <Grid item xs={3}>
+              <WfLoadExtensions wfLoadExtensions={wfLoadExtensions} />
+            </Grid>
+            <Grid item xs={3}>
+              <ExtensionsInDirectory
+                extensionsInDirectory={extensionsInDirectory}
+              />
+            </Grid>
+          </Grid>
         </div>
       </Modal>
       <form onSubmit={handleManageExtension}>

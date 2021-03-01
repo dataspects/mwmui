@@ -11,23 +11,69 @@ import {
   MenuItem,
   InputLabel,
   Link,
+  Chip,
+  Modal,
 } from "@material-ui/core"
 import AppsIcon from "@material-ui/icons/Apps"
+import Apps from "../components/Apps"
+import { makeStyles } from "@material-ui/core/styles"
+
+const useStyles = makeStyles(theme => ({
+  modal: {
+    position: "absolute",
+    backgroundColor: theme.palette.background.paper,
+    border: "2px solid #000",
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+    overflowY: "scroll",
+    top: "100px",
+    right: "10px",
+    left: "20%",
+    bottom: "10px",
+  },
+}))
 
 export default function AppStore({
   handleManageApp,
   handleAppName,
   currentAppName,
   appCatalogue,
+  installedApps,
+  getInstalledApps,
 }) {
+  const classes = useStyles()
+  const [modalInstalledAppsOpen, setModalInstalledAppsOpen] = React.useState(
+    false
+  )
+
+  const handleModalInstalledAppsOpen = () => {
+    getInstalledApps()
+    setModalInstalledAppsOpen(true)
+  }
+
+  const handleModalInstalledAppsClose = () => {
+    setModalInstalledAppsOpen(false)
+  }
   return (
     <>
       <h2>
-        <AppsIcon color="primary" /> App Store (<i>pending</i>)
+        <AppsIcon color="primary" /> App Store{" "}
+        <Chip
+          label={"Check installed apps..."}
+          onClick={handleModalInstalledAppsOpen}
+          variant="outlined"
+        />
       </h2>
+      <Modal
+        open={modalInstalledAppsOpen}
+        onClose={handleModalInstalledAppsClose}
+      >
+        <div className={classes.modal}>
+          <Apps installedApps={installedApps} />
+        </div>
+      </Modal>
       <p>
-        The app store is managed by MWStake's App Vetting Group.
-        <br />
+        The app store is managed by MWStake's App Vetting Group.{" "}
         <Link href="https://github.com/dataspects/mediawiki-manager/blob/main/catalogues/apps.json">
           See current apps catalogue.
         </Link>
@@ -44,13 +90,14 @@ export default function AppStore({
                   value={currentAppName}
                   onChange={handleAppName}
                 >
-                  {Object.keys(appCatalogue).map(key => {
-                    return (
-                      <MenuItem key={key} value={key}>
-                        {key}
-                      </MenuItem>
-                    )
-                  })}
+                  {appCatalogue &&
+                    Object.keys(appCatalogue).map(key => {
+                      return (
+                        <MenuItem key={key} value={appCatalogue[key].name}>
+                          {appCatalogue[key].name}
+                        </MenuItem>
+                      )
+                    })}
                 </Select>
               </FormControl>
             </Box>

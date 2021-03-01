@@ -1,10 +1,10 @@
 import React from "react"
 
-export default function Apps({ apps }) {
+export default function Apps({ installedApps }) {
   return (
     <>
       <p>Apps</p>
-      <i>pending</i>
+      <pre>{JSON.stringify(installedApps, null, 2)}</pre>
     </>
   )
 }

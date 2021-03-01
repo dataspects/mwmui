@@ -1,14 +1,7 @@
 import React from "react"
 import { Grid, Box, Paper } from "@material-ui/core"
-import AppBar from "@material-ui/core/AppBar"
-import Tabs from "@material-ui/core/Tabs"
-import Tab from "@material-ui/core/Tab"
 import axios from "axios"
-import ExtensionsInDirectory from "../components/ExtensionsInDirectory"
-import ComposerjsonReq from "../components/ComposerjsonReq"
-import WfLoadExtensions from "../components/WfLoadExtensions"
-import ExtensionsByMWAPI from "../components/ExtensionsByMWAPI"
-import Apps from "../components/Apps"
+
 import ExtensionStore from "../components/ExtensionStore"
 import UpgradeManager from "../components/UpgradeManager"
 import SnapshotManager from "../components/SnapshotManager"
@@ -25,6 +18,7 @@ const Home = () => {
   const [extensionCatalogue, setExtensionCatalogue] = React.useState([])
   const [generalSiteInfo, setGeneralSiteInfo] = React.useState([])
   const [appCatalogue, setAppCatalogue] = React.useState([])
+  const [installedApps, setInstalledApps] = React.useState([])
   const [snapshotCatalogue, setSnapshotCatalogue] = React.useState([])
   const [upgradesCatalogue, setUpgradesCatalogue] = React.useState({})
   const [logStack, setLogStack] = React.useState([])
@@ -51,6 +45,20 @@ const Home = () => {
     })
   }, [])
 
+  const getInstalledApps = React.useCallback(() => {
+    axios.get(`${process.env.API_URL}?action=installedApps`).then(res => {
+      setInstalledApps(res.data.installedApps)
+      addToLogStack(res.data.status)
+    })
+  }, [])
+
+  const getExtensionsByMWAPI = React.useCallback(() => {
+    axios.get(`${process.env.API_URL}?action=extensionsByMWAPI`).then(res => {
+      setExtensionsByMWAPI(res.data.extensionsByMWAPI)
+      addToLogStack(res.data.status)
+    })
+  }, [])
+
   React.useEffect(() => {
     getExtensionsOverview()
     getGeneralSiteInfo()
@@ -66,12 +74,15 @@ const Home = () => {
       setUpgradesCatalogue(res.data.upgradesCatalogue)
       addToLogStack(res.data.status)
     })
-    axios.get(`${process.env.API_URL}?action=extensionsByMWAPI`).then(res => {
-      setExtensionsByMWAPI(res.data.extensionsByMWAPI)
-      addToLogStack(res.data.status)
-    })
+    getExtensionsByMWAPI()
+    getInstalledApps()
     getSnapshotsCatalogue()
-  }, [getExtensionsOverview, getSnapshotsCatalogue, getGeneralSiteInfo])
+  }, [
+    getExtensionsOverview,
+    getSnapshotsCatalogue,
+    getGeneralSiteInfo,
+    getInstalledApps,
+  ])
 
   const [currentExtensionName, setCurrentExtensionName] = React.useState("")
   const handleExtensionName = event => {
@@ -103,17 +114,17 @@ const Home = () => {
 
   const handleManageApp = event => {
     event.preventDefault()
-    // const { mode } = event.currentTarget.elements
-    // axios
-    //   .get(
-    //     `${process.env.API_URL}?action=manageExtension&mode=${mode.value}&extensionName=${currentExtensionName}`
-    //   )
-    //   .then(res => {
-    //     addToLogStack(JSON.stringify(res.data.status))
-    //   })
-    //   .catch(err => {
-    //     console.log(err)
-    //   })
+    const { mode } = event.currentTarget.elements
+    axios
+      .get(
+        `${process.env.API_URL}?action=manageApp&mode=${mode.value}&appName=${currentAppName}`
+      )
+      .then(res => {
+        addToLogStack(res.data.status)
+      })
+      .catch(err => {
+        console.log(err)
+      })
   }
 
   const takeSnapshot = () => {
@@ -127,26 +138,6 @@ const Home = () => {
       .catch(err => {
         console.log(err)
       })
-  }
-
-  const [tabValue, setTabValue] = React.useState(0)
-  const handleTabChange = (event, newValue) => {
-    setTabValue(newValue)
-  }
-
-  const TabPanel = props => {
-    const { children, value, index, ...other } = props
-    return (
-      <div
-        role="tabpanel"
-        hidden={value !== index}
-        id={`simple-tabpanel-${index}`}
-        aria-labelledby={`simple-tab-${index}`}
-        {...other}
-      >
-        {value === index && <Box p={3}>{children}</Box>}
-      </div>
-    )
   }
 
   const handleUpgradeNow = () => {
@@ -191,6 +182,12 @@ const Home = () => {
           handleExtensionName={handleExtensionName}
           currentExtensionName={currentExtensionName}
           extensionCatalogue={extensionCatalogue}
+          extensionsByMWAPI={extensionsByMWAPI}
+          composerjsonReq={composerjsonReq}
+          wfLoadExtensions={wfLoadExtensions}
+          extensionsInDirectory={extensionsInDirectory}
+          getExtensionsOverview={getExtensionsOverview}
+          getExtensionsByMWAPI={getExtensionsByMWAPI}
         />
       </Grid>
       <Grid item xs={6}>
@@ -199,6 +196,8 @@ const Home = () => {
           handleAppName={handleAppName}
           currentAppName={currentAppName}
           appCatalogue={appCatalogue}
+          installedApps={installedApps}
+          getInstalledApps={getInstalledApps}
         />
       </Grid>
       <Grid item xs={6}>
@@ -213,35 +212,6 @@ const Home = () => {
           snapshotCatalogue={snapshotCatalogue}
           takeSnapshot={takeSnapshot}
         />
-      </Grid>
-      <Grid item xs={12}>
-        <AppBar position="static">
-          <Tabs value={tabValue} onChange={handleTabChange}>
-            <Tab label="Extensions" />
-            <Tab label="Apps" />
-          </Tabs>
-        </AppBar>
-        <TabPanel value={tabValue} index={0}>
-          <Grid container spacing={3}>
-            <Grid item xs={3}>
-              <ExtensionsByMWAPI extensionsByMWAPI={extensionsByMWAPI} />
-            </Grid>
-            <Grid item xs={3}>
-              <ComposerjsonReq composerjsonReq={composerjsonReq} />
-            </Grid>
-            <Grid item xs={3}>
-              <WfLoadExtensions wfLoadExtensions={wfLoadExtensions} />
-            </Grid>
-            <Grid item xs={3}>
-              <ExtensionsInDirectory
-                extensionsInDirectory={extensionsInDirectory}
-              />
-            </Grid>
-          </Grid>
-        </TabPanel>
-        <TabPanel value={tabValue} index={1}>
-          <Apps apps={{}} />
-        </TabPanel>
       </Grid>
     </Grid>
   )
