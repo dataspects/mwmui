@@ -1,5 +1,5 @@
 import React from "react"
-import { Grid, Box, Paper, LinearProgress } from "@material-ui/core"
+import { Grid, Box, Paper, LinearProgress, Typography } from "@material-ui/core"
 import axios from "axios"
 
 import ExtensionStore from "../components/ExtensionStore"
@@ -25,58 +25,82 @@ const Home = () => {
   const [systemIsBusy, setSystemIsBusy] = React.useState(false)
 
   const getGeneralSiteInfo = React.useCallback(() => {
-    axios.get(`${process.env.API_URL}?action=generalSiteInfo`).then(res => {
-      if (res.data.status.endsWith("MediaWiki info loaded")) {
-        setGeneralSiteInfo(res.data.generalSiteInfo)
-        addToLogStack(res.data.status)
-      }
-    }).catch(err=>{})
+    axios
+      .get(`${process.env.API_URL}?action=generalSiteInfo`)
+      .then(res => {
+        if (res.data.status.endsWith("MediaWiki info loaded")) {
+          setGeneralSiteInfo(res.data.generalSiteInfo)
+          addToLogStack(res.data.status)
+        }
+      })
+      .catch(err => {})
   }, [])
 
   const getExtensionsOverview = React.useCallback(() => {
-    axios.get(`${process.env.API_URL}?action=overview`).then(res => {
-      setExtensionsInDirectory(res.data.extensionsInDirectory)
-      setComposerjsonReq(res.data.composerjsonReq)
-      setWfLoadExtensions(res.data.wfLoadExtensions)
-    }).catch(err=>{})
+    axios
+      .get(`${process.env.API_URL}?action=overview`)
+      .then(res => {
+        setExtensionsInDirectory(res.data.extensionsInDirectory)
+        setComposerjsonReq(res.data.composerjsonReq)
+        setWfLoadExtensions(res.data.wfLoadExtensions)
+      })
+      .catch(err => {})
   }, [])
 
   const getSnapshotsCatalogue = React.useCallback(() => {
-    axios.get(`${process.env.API_URL}?action=snapshotCatalogue`).then(res => {
-      setSnapshotCatalogue(res.data.snapshotCatalogue)
-      addToLogStack(res.data.status)
-    }).catch(err=>{})
+    axios
+      .get(`${process.env.API_URL}?action=snapshotCatalogue`)
+      .then(res => {
+        setSnapshotCatalogue(res.data.snapshotCatalogue)
+        addToLogStack(res.data.status)
+      })
+      .catch(err => {})
   }, [])
 
   const getInstalledApps = React.useCallback(() => {
-    axios.get(`${process.env.API_URL}?action=installedApps`).then(res => {
-      setInstalledApps(res.data.installedApps)
-      addToLogStack(res.data.status)
-    }).catch(err=>{})
+    axios
+      .get(`${process.env.API_URL}?action=installedApps`)
+      .then(res => {
+        setInstalledApps(res.data.installedApps)
+        addToLogStack(res.data.status)
+      })
+      .catch(err => {})
   }, [])
 
   const getExtensionsByMWAPI = React.useCallback(() => {
-    axios.get(`${process.env.API_URL}?action=extensionsByMWAPI`).then(res => {
-      setExtensionsByMWAPI(res.data.extensionsByMWAPI)
-      addToLogStack(res.data.status)
-    }).catch(err=>{})
+    axios
+      .get(`${process.env.API_URL}?action=extensionsByMWAPI`)
+      .then(res => {
+        setExtensionsByMWAPI(res.data.extensionsByMWAPI)
+        addToLogStack(res.data.status)
+      })
+      .catch(err => {})
   }, [])
 
   React.useEffect(() => {
     getGeneralSiteInfo()
     getExtensionsOverview()
-    axios.get(`${process.env.API_URL}?action=extensionCatalogue`).then(res => {
-      setExtensionCatalogue(res.data.extensionCatalogue)
-      addToLogStack(res.data.status)
-    }).catch(err=>{})
-    axios.get(`${process.env.API_URL}?action=appCatalogue`).then(res => {
-      setAppCatalogue(res.data.appCatalogue)
-      addToLogStack(res.data.status)
-    }).catch(err=>{})
-    axios.get(`${process.env.API_URL}?action=upgradesCatalogue`).then(res => {
-      setUpgradesCatalogue(res.data.upgradesCatalogue)
-      addToLogStack(res.data.status)
-    }).catch(err=>{})
+    axios
+      .get(`${process.env.API_URL}?action=extensionCatalogue`)
+      .then(res => {
+        setExtensionCatalogue(res.data.extensionCatalogue)
+        addToLogStack(res.data.status)
+      })
+      .catch(err => {})
+    axios
+      .get(`${process.env.API_URL}?action=appCatalogue`)
+      .then(res => {
+        setAppCatalogue(res.data.appCatalogue)
+        addToLogStack(res.data.status)
+      })
+      .catch(err => {})
+    axios
+      .get(`${process.env.API_URL}?action=upgradesCatalogue`)
+      .then(res => {
+        setUpgradesCatalogue(res.data.upgradesCatalogue)
+        addToLogStack(res.data.status)
+      })
+      .catch(err => {})
     getExtensionsByMWAPI()
     getInstalledApps()
     getSnapshotsCatalogue()
@@ -234,10 +258,25 @@ const Home = () => {
               takeSnapshot={takeSnapshot}
             />
           </Grid>
-        </>):(
-          <Grid item xs={6}>Contacting MediaWiki API...<LinearProgress/>Just a moment &mdash; and if we're hangin' here, your MediaWiki might be down. :(</Grid>
-        )
-      }
+        </>
+      ) : (
+        <Grid item xs={6}>
+          Contacting MediaWiki API...
+          <LinearProgress />
+          Just a moment &mdash; and if we're hangin' here, your MediaWiki might
+          be down. :(
+          <br />
+          In that case, here's a friend:
+          <Box>
+            <Typography color="primary">
+              <code>
+                user@server:~/mediawiki-manager$ sudo docker logs -f
+                mediawiki_canasta
+              </code>
+            </Typography>
+          </Box>
+        </Grid>
+      )}
     </Grid>
   )
 }
