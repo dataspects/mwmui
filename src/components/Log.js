@@ -1,5 +1,12 @@
 import React from "react"
-import { Typography, Button, Box, Chip, Modal } from "@material-ui/core"
+import {
+  Typography,
+  Button,
+  Box,
+  Chip,
+  Modal,
+  LinearProgress,
+} from "@material-ui/core"
 import ShortTextIcon from "@material-ui/icons/ShortText"
 import { makeStyles } from "@material-ui/core/styles"
 import axios from "axios"
@@ -23,7 +30,7 @@ const useStyles = makeStyles(theme => ({
     bottom: "10px",
   },
 }))
-const Log = ({ logStackRef, logStack }) => {
+const Log = ({ logStackRef, logStack, systemIsBusy }) => {
   const classes = useStyles()
 
   const [logFile, setLogFile] = React.useState("")
@@ -60,6 +67,7 @@ const Log = ({ logStackRef, logStack }) => {
         {logStack.map(item => {
           return <div key={item}>{item}</div>
         })}
+        {systemIsBusy ? <LinearProgress /> : <></>}
       </Box>
     </>
   )

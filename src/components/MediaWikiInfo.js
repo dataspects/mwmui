@@ -17,7 +17,7 @@ export default function MediaWikiInfo({ generalSiteInfo }) {
   ].sort()
   return (
     <Paper>
-      {Object.keys(generalSiteInfo).length > 0 ? (
+      {generalSiteInfo ? (
         <>
           <Box p={2}>
             <img

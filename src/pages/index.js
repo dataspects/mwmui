@@ -1,5 +1,5 @@
 import React from "react"
-import { Grid, Box, Paper } from "@material-ui/core"
+import { Grid, Box, Paper, LinearProgress } from "@material-ui/core"
 import axios from "axios"
 
 import ExtensionStore from "../components/ExtensionStore"
@@ -16,18 +16,21 @@ const Home = () => {
   const [wfLoadExtensions, setWfLoadExtensions] = React.useState([])
   const [extensionsByMWAPI, setExtensionsByMWAPI] = React.useState([])
   const [extensionCatalogue, setExtensionCatalogue] = React.useState([])
-  const [generalSiteInfo, setGeneralSiteInfo] = React.useState([])
+  const [generalSiteInfo, setGeneralSiteInfo] = React.useState(null)
   const [appCatalogue, setAppCatalogue] = React.useState([])
   const [installedApps, setInstalledApps] = React.useState([])
   const [snapshotCatalogue, setSnapshotCatalogue] = React.useState([])
   const [upgradesCatalogue, setUpgradesCatalogue] = React.useState({})
   const [logStack, setLogStack] = React.useState([])
+  const [systemIsBusy, setSystemIsBusy] = React.useState(false)
 
   const getGeneralSiteInfo = React.useCallback(() => {
     axios.get(`${process.env.API_URL}?action=generalSiteInfo`).then(res => {
-      setGeneralSiteInfo(res.data.generalSiteInfo)
-      addToLogStack(res.data.status)
-    })
+      if (res.data.status.endsWith("MediaWiki info loaded")) {
+        setGeneralSiteInfo(res.data.generalSiteInfo)
+        addToLogStack(res.data.status)
+      }
+    }).catch(err=>{})
   }, [])
 
   const getExtensionsOverview = React.useCallback(() => {
@@ -35,45 +38,45 @@ const Home = () => {
       setExtensionsInDirectory(res.data.extensionsInDirectory)
       setComposerjsonReq(res.data.composerjsonReq)
       setWfLoadExtensions(res.data.wfLoadExtensions)
-    })
+    }).catch(err=>{})
   }, [])
 
   const getSnapshotsCatalogue = React.useCallback(() => {
     axios.get(`${process.env.API_URL}?action=snapshotCatalogue`).then(res => {
       setSnapshotCatalogue(res.data.snapshotCatalogue)
       addToLogStack(res.data.status)
-    })
+    }).catch(err=>{})
   }, [])
 
   const getInstalledApps = React.useCallback(() => {
     axios.get(`${process.env.API_URL}?action=installedApps`).then(res => {
       setInstalledApps(res.data.installedApps)
       addToLogStack(res.data.status)
-    })
+    }).catch(err=>{})
   }, [])
 
   const getExtensionsByMWAPI = React.useCallback(() => {
     axios.get(`${process.env.API_URL}?action=extensionsByMWAPI`).then(res => {
       setExtensionsByMWAPI(res.data.extensionsByMWAPI)
       addToLogStack(res.data.status)
-    })
+    }).catch(err=>{})
   }, [])
 
   React.useEffect(() => {
-    getExtensionsOverview()
     getGeneralSiteInfo()
+    getExtensionsOverview()
     axios.get(`${process.env.API_URL}?action=extensionCatalogue`).then(res => {
       setExtensionCatalogue(res.data.extensionCatalogue)
       addToLogStack(res.data.status)
-    })
+    }).catch(err=>{})
     axios.get(`${process.env.API_URL}?action=appCatalogue`).then(res => {
       setAppCatalogue(res.data.appCatalogue)
       addToLogStack(res.data.status)
-    })
+    }).catch(err=>{})
     axios.get(`${process.env.API_URL}?action=upgradesCatalogue`).then(res => {
       setUpgradesCatalogue(res.data.upgradesCatalogue)
       addToLogStack(res.data.status)
-    })
+    }).catch(err=>{})
     getExtensionsByMWAPI()
     getInstalledApps()
     getSnapshotsCatalogue()
@@ -94,6 +97,7 @@ const Home = () => {
     event.preventDefault()
     const { mode } = event.currentTarget.elements
     console.log(currentExtensionName)
+    setSystemIsBusy(true)
     addToLogStack(`Managing extension ${currentExtensionName}...`)
     axios
       .get(
@@ -101,6 +105,7 @@ const Home = () => {
       )
       .then(res => {
         getExtensionsOverview()
+        setSystemIsBusy(false)
         addToLogStack(res.data.status)
       })
       .catch(err => {
@@ -116,11 +121,14 @@ const Home = () => {
   const handleManageApp = event => {
     event.preventDefault()
     const { mode } = event.currentTarget.elements
+    setSystemIsBusy(true)
+    addToLogStack(`Managing app ${currentAppName}...`)
     axios
       .get(
         `${process.env.API_URL}?action=manageApp&mode=${mode.value}&appName=${currentAppName}`
       )
       .then(res => {
+        setSystemIsBusy(false)
         addToLogStack(res.data.status)
       })
       .catch(err => {
@@ -129,10 +137,12 @@ const Home = () => {
   }
 
   const takeSnapshot = () => {
+    setSystemIsBusy(true)
     addToLogStack("Taking snapshot...")
     axios
       .get(`${process.env.API_URL}?action=takeSnapshot`)
       .then(res => {
+        setSystemIsBusy(false)
         addToLogStack(res.data.status)
         getSnapshotsCatalogue()
       })
@@ -142,11 +152,13 @@ const Home = () => {
   }
 
   const handleUpgradeNow = () => {
+    setSystemIsBusy(true)
     addToLogStack("Upgrading now...")
     axios
       .get(`${process.env.API_URL}?action=upgradeNow`)
       .then(res => {
         getGeneralSiteInfo()
+        setSystemIsBusy(false)
         addToLogStack(res.data.status)
       })
       .catch(err => {
@@ -171,51 +183,61 @@ const Home = () => {
           </Box>
         </Paper>
         <Box mt={2}>
-          <Log logStackRef={logStackRef} logStack={logStack} />
+          <Log
+            logStackRef={logStackRef}
+            logStack={logStack}
+            systemIsBusy={systemIsBusy}
+          />
         </Box>
       </Grid>
-      <Grid item xs={6}>
-        <MediaWikiInfo generalSiteInfo={generalSiteInfo} />
-      </Grid>
-      <Grid item xs={6}>
-        <ExtensionStore
-          handleManageExtension={handleManageExtension}
-          handleExtensionName={handleExtensionName}
-          currentExtensionName={currentExtensionName}
-          extensionCatalogue={extensionCatalogue}
-          extensionsByMWAPI={extensionsByMWAPI}
-          composerjsonReq={composerjsonReq}
-          wfLoadExtensions={wfLoadExtensions}
-          extensionsInDirectory={extensionsInDirectory}
-          getExtensionsOverview={getExtensionsOverview}
-          getExtensionsByMWAPI={getExtensionsByMWAPI}
-          generalSiteInfo={generalSiteInfo}
-        />
-      </Grid>
-      <Grid item xs={6}>
-        <AppStore
-          handleManageApp={handleManageApp}
-          handleAppName={handleAppName}
-          currentAppName={currentAppName}
-          appCatalogue={appCatalogue}
-          installedApps={installedApps}
-          getInstalledApps={getInstalledApps}
-          generalSiteInfo={generalSiteInfo}
-        />
-      </Grid>
-      <Grid item xs={6}>
-        <UpgradeManager
-          upgradesCatalogue={upgradesCatalogue}
-          generalSiteInfo={generalSiteInfo}
-          handleUpgradeNow={handleUpgradeNow}
-        />
-      </Grid>
-      <Grid item xs={6}>
-        <SnapshotManager
-          snapshotCatalogue={snapshotCatalogue}
-          takeSnapshot={takeSnapshot}
-        />
-      </Grid>
+      {generalSiteInfo ? (
+        <>
+          <Grid item xs={6}>
+            <MediaWikiInfo generalSiteInfo={generalSiteInfo} />
+          </Grid>
+          <Grid item xs={6}>
+            <ExtensionStore
+              handleManageExtension={handleManageExtension}
+              handleExtensionName={handleExtensionName}
+              currentExtensionName={currentExtensionName}
+              extensionCatalogue={extensionCatalogue}
+              extensionsByMWAPI={extensionsByMWAPI}
+              composerjsonReq={composerjsonReq}
+              wfLoadExtensions={wfLoadExtensions}
+              extensionsInDirectory={extensionsInDirectory}
+              getExtensionsOverview={getExtensionsOverview}
+              getExtensionsByMWAPI={getExtensionsByMWAPI}
+              generalSiteInfo={generalSiteInfo}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <AppStore
+              handleManageApp={handleManageApp}
+              handleAppName={handleAppName}
+              currentAppName={currentAppName}
+              appCatalogue={appCatalogue}
+              installedApps={installedApps}
+              getInstalledApps={getInstalledApps}
+              generalSiteInfo={generalSiteInfo}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <UpgradeManager
+              upgradesCatalogue={upgradesCatalogue}
+              generalSiteInfo={generalSiteInfo}
+              handleUpgradeNow={handleUpgradeNow}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <SnapshotManager
+              snapshotCatalogue={snapshotCatalogue}
+              takeSnapshot={takeSnapshot}
+            />
+          </Grid>
+        </>):(
+          <Grid item xs={6}>Contacting MediaWiki API...<LinearProgress/>Just a moment &mdash; and if we're hangin' here, your MediaWiki might be down. :(</Grid>
+        )
+      }
     </Grid>
   )
 }
