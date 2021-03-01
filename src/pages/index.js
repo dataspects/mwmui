@@ -85,7 +85,7 @@ const Home = () => {
     addToLogStack(`Managing extension ${currentExtensionName}...`)
     axios
       .get(
-        `${process.env.API_URL}?action=enableDisableExtension&mode=${mode.value}&extensionName=${currentExtensionName}`
+        `${process.env.API_URL}?action=manageExtension&mode=${mode.value}&extensionName=${currentExtensionName}`
       )
       .then(res => {
         getExtensionsOverview()
@@ -106,7 +106,7 @@ const Home = () => {
     // const { mode } = event.currentTarget.elements
     // axios
     //   .get(
-    //     `${process.env.API_URL}?action=enableDisableExtension&mode=${mode.value}&extensionName=${currentExtensionName}`
+    //     `${process.env.API_URL}?action=manageExtension&mode=${mode.value}&extensionName=${currentExtensionName}`
     //   )
     //   .then(res => {
     //     addToLogStack(JSON.stringify(res.data.status))
