@@ -13,6 +13,7 @@ import {
   Modal,
   Chip,
   Avatar,
+  Typography,
 } from "@material-ui/core"
 import ExtensionCatalogue from "../components/ExtensionCatalogue"
 import ExtensionIcon from "@material-ui/icons/Extension"
@@ -48,6 +49,7 @@ export default function ExtensionStore({
   extensionsInDirectory,
   getExtensionsOverview,
   getExtensionsByMWAPI,
+  generalSiteInfo,
 }) {
   const classes = useStyles()
 
@@ -109,6 +111,9 @@ export default function ExtensionStore({
         onClose={handleModalInstalledExtensionsClose}
       >
         <div className={classes.modal}>
+          <Typography variant="h5" gutterBottom>
+            Extensions currently installed on {generalSiteInfo.base}
+          </Typography>
           <Grid container spacing={3}>
             <Grid item xs={3}>
               <ExtensionsByMWAPI extensionsByMWAPI={extensionsByMWAPI} />

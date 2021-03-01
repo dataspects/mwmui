@@ -13,6 +13,7 @@ import {
   Link,
   Chip,
   Modal,
+  Typography,
 } from "@material-ui/core"
 import AppsIcon from "@material-ui/icons/Apps"
 import Apps from "../components/Apps"
@@ -40,6 +41,7 @@ export default function AppStore({
   appCatalogue,
   installedApps,
   getInstalledApps,
+  generalSiteInfo,
 }) {
   const classes = useStyles()
   const [modalInstalledAppsOpen, setModalInstalledAppsOpen] = React.useState(
@@ -69,6 +71,9 @@ export default function AppStore({
         onClose={handleModalInstalledAppsClose}
       >
         <div className={classes.modal}>
+          <Typography variant="h5" gutterBottom>
+            dataspects Apps currently installed on {generalSiteInfo.base}
+          </Typography>
           <Apps installedApps={installedApps} />
         </div>
       </Modal>

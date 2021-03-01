@@ -82,6 +82,7 @@ const Home = () => {
     getSnapshotsCatalogue,
     getGeneralSiteInfo,
     getInstalledApps,
+    getExtensionsByMWAPI,
   ])
 
   const [currentExtensionName, setCurrentExtensionName] = React.useState("")
@@ -188,6 +189,7 @@ const Home = () => {
           extensionsInDirectory={extensionsInDirectory}
           getExtensionsOverview={getExtensionsOverview}
           getExtensionsByMWAPI={getExtensionsByMWAPI}
+          generalSiteInfo={generalSiteInfo}
         />
       </Grid>
       <Grid item xs={6}>
@@ -198,6 +200,7 @@ const Home = () => {
           appCatalogue={appCatalogue}
           installedApps={installedApps}
           getInstalledApps={getInstalledApps}
+          generalSiteInfo={generalSiteInfo}
         />
       </Grid>
       <Grid item xs={6}>
