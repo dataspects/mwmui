@@ -13,10 +13,11 @@ import {
   Link,
   Chip,
   Modal,
-  Typography,
+  Avatar,
 } from "@material-ui/core"
 import AppsIcon from "@material-ui/icons/Apps"
-import Apps from "../components/Apps"
+import Apps from "./Apps"
+import AppsCatalogue from "./AppsCatalogue"
 import { makeStyles } from "@material-ui/core/styles"
 
 const useStyles = makeStyles(theme => ({
@@ -44,6 +45,19 @@ export default function AppStore({
   generalSiteInfo,
 }) {
   const classes = useStyles()
+
+  const [modalAppsCatalogueOpen, setModalAppsCatalogueOpen] = React.useState(
+    false
+  )
+
+  const handleModalAppsCatalogueOpen = () => {
+    setModalAppsCatalogueOpen(true)
+  }
+
+  const handleModalAppsCatalogueClose = () => {
+    setModalAppsCatalogueOpen(false)
+  }
+
   const [modalInstalledAppsOpen, setModalInstalledAppsOpen] = React.useState(
     false
   )
@@ -61,20 +75,39 @@ export default function AppStore({
       <h2>
         <AppsIcon color="primary" /> App Store{" "}
         <Chip
+          label={"View Apps Catalogue..."}
+          onClick={handleModalAppsCatalogueOpen}
+          avatar={
+            <Avatar alt="MWStake" src="/ui/images/dataspectsavatar.png" />
+          }
+          variant="outlined"
+        />{" "}
+        <Chip
           label={"Check installed apps..."}
           onClick={handleModalInstalledAppsOpen}
+          avatar={
+            <Avatar alt="MWStake" src="/ui/images/dataspectsavatar.png" />
+          }
           variant="outlined"
         />
       </h2>
+      <Modal
+        open={modalAppsCatalogueOpen}
+        onClose={handleModalAppsCatalogueClose}
+      >
+        <div className={classes.modal}>
+          <AppsCatalogue appCatalogue={appCatalogue} />
+        </div>
+      </Modal>
       <Modal
         open={modalInstalledAppsOpen}
         onClose={handleModalInstalledAppsClose}
       >
         <div className={classes.modal}>
-          <Typography variant="h5" gutterBottom>
-            dataspects Apps currently installed on {generalSiteInfo.base}
-          </Typography>
-          <Apps installedApps={installedApps} />
+          <Apps
+            installedApps={installedApps}
+            generalSiteInfo={generalSiteInfo}
+          />
         </div>
       </Modal>
       <p>
@@ -122,6 +155,7 @@ export default function AppStore({
                   value="disable"
                   control={<Radio />}
                   label="disable"
+                  disabled
                 />
               </RadioGroup>
             </FormControl>

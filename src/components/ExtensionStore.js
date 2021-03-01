@@ -88,7 +88,7 @@ export default function ExtensionStore({
         <Chip
           label={"View MWStake Certified Extensions Catalogue..."}
           onClick={handleModalExtensionCatalogueOpen}
-          avatar={<Avatar alt="MWStake" src="/images/mwstake.png" />}
+          avatar={<Avatar alt="MWStake" src="/ui/images/mwstake.png" />}
           variant="outlined"
           color="primary"
         />{" "}

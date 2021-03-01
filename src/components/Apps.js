@@ -1,8 +1,9 @@
 import React from "react"
+import { Typography } from "@material-ui/core"
 import MUIDataTable from "mui-datatables"
 import InstalledAppItem from "./InstalledAppItem"
 
-export default function Apps({ installedApps }) {
+export default function Apps({ installedApps, generalSiteInfo }) {
   const options = {
     tableBodyHeight: "100%",
     selectableRows: "none",
@@ -37,12 +38,22 @@ export default function Apps({ installedApps }) {
     if (installedApps) {
       try {
         return (
-          <MUIDataTable
-            columns={columns}
-            // FIXME
-            data={installedApps}
-            options={options}
-          />
+          <>
+            <img
+              src="/ui/images/dataspects.png"
+              alt="dataspects"
+              style={{ width: "50px", float: "right" }}
+            />
+            <Typography variant="h5" gutterBottom>
+              dataspects Apps currently installed on {generalSiteInfo.base}
+            </Typography>
+            <MUIDataTable
+              columns={columns}
+              // FIXME
+              data={installedApps}
+              options={options}
+            />
+          </>
         )
       } catch {
         //FIXME
@@ -51,10 +62,5 @@ export default function Apps({ installedApps }) {
       }
     }
   }
-  return (
-    <>
-      <p>Apps</p>
-      {getTable()}
-    </>
-  )
+  return getTable()
 }
