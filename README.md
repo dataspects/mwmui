@@ -1,4 +1,6 @@
-# dataspects Search
+# MediaWiki Manager UI
+
+MWMUI is the UI part of https://github.com/dataspects/mediawiki-manager.
 
 ## Cypress Testing
 
