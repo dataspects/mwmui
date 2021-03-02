@@ -13,7 +13,7 @@ export default function UpgradeManager({
       <h2>
         <SystemUpdateAltIcon color="primary" /> Upgrade Manager
       </h2>
-      {Object.keys(upgradesCatalogue).length > 0 ? (
+      {upgradesCatalogue ? (
         <>
           <p>
             For your <b>current {generalSiteInfo.generator}</b> and the{" "}
@@ -67,7 +67,13 @@ export default function UpgradeManager({
           </Button>
         </>
       ) : (
-        <LinearProgress />
+        <>
+          <LinearProgress />
+          <p>
+            Just a moment &mdash; and if we're hangin' here, there is a problem
+            obtaining the upgrades catalogue. :(
+          </p>
+        </>
       )}
     </>
   )

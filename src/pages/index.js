@@ -129,6 +129,7 @@ const Home = () => {
       )
       .then(res => {
         getExtensionsOverview()
+        getExtensionsByMWAPI()
         setSystemIsBusy(false)
         addToLogStack(res.data.status)
       })
@@ -198,12 +199,37 @@ const Home = () => {
     logStackRef.current.scrollTop = logStackRef.current.scrollHeight
   }, [logStack])
 
+  const runTest = React.useCallback(() => {
+    setSystemIsBusy(true)
+    addToLogStack("Running test")
+    axios
+      .get(`${process.env.API_URL}?action=runTest`)
+      .then(res => {
+        getExtensionsOverview()
+        getSnapshotsCatalogue()
+        getGeneralSiteInfo()
+        getInstalledApps()
+        getExtensionsByMWAPI()
+        addToLogStack(res.data.status)
+        setSystemIsBusy(false)
+      })
+      .catch(err => {
+        console.log("Error running test: " + err)
+      })
+  }, [
+    getExtensionsOverview,
+    getSnapshotsCatalogue,
+    getGeneralSiteInfo,
+    getInstalledApps,
+    getExtensionsByMWAPI,
+  ])
+
   return (
     <Grid container spacing={5}>
       <Grid item xs={6}>
         <Paper>
           <Box p={2}>
-            <Help />
+            <Help runTest={runTest} />
           </Box>
         </Paper>
         <Box mt={2}>

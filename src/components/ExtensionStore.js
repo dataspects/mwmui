@@ -84,19 +84,23 @@ export default function ExtensionStore({
   return (
     <>
       <h2>
-        <ExtensionIcon color="primary" /> Extension Store{" "}
-        <Chip
-          label={"View MWStake Certified Extensions Catalogue..."}
-          onClick={handleModalExtensionCatalogueOpen}
-          avatar={<Avatar alt="MWStake" src="/ui/images/mwstake.png" />}
-          variant="outlined"
-          color="primary"
-        />{" "}
-        <Chip
-          label={"Check installed extensions..."}
-          onClick={handleModalInstalledExtensionsOpen}
-          variant="outlined"
-        />
+        <ExtensionIcon color="primary" /> Extension Store
+        <Box m={1}>
+          <Chip
+            label={"View MWStake Certified Extensions Catalogue..."}
+            onClick={handleModalExtensionCatalogueOpen}
+            avatar={<Avatar alt="MWStake" src="/ui/images/mwstake.png" />}
+            variant="outlined"
+            color="primary"
+          />
+        </Box>
+        <Box m={1}>
+          <Chip
+            label={"Check installed extensions..."}
+            onClick={handleModalInstalledExtensionsOpen}
+            variant="outlined"
+          />
+        </Box>
       </h2>
       <Modal
         open={modalExtensionCatalogueOpen}

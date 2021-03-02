@@ -28,6 +28,11 @@ export default function Layout({ children }) {
             </Grid>
             <Grid item xs={8} style={{ textAlign: "center" }}>
               <Box fontSize="h4.fontSize" m={1}>
+                <img
+                  src="/ui/images/mwstake.png"
+                  alt="MWStake"
+                  style={{ width: "50px", verticalAlign: "middle" }}
+                />{" "}
                 MediaWiki Manager
               </Box>
             </Grid>

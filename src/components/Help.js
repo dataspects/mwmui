@@ -1,7 +1,8 @@
 import React from "react"
-import { Box, Link } from "@material-ui/core"
+import { Box, Link, Chip } from "@material-ui/core"
+import WarningIcon from "@material-ui/icons/Warning"
 
-export default function Help() {
+export default function Help({ runTest }) {
   return (
     <>
       <b>Features</b>:
@@ -28,6 +29,14 @@ export default function Help() {
         </Link>
         {" | "}
         <Link href="https://github.com/dataspects/mwmui">mwmui</Link>
+      </Box>
+      <Box mt={2}>
+        <Chip
+          label={"Run test..."}
+          onClick={runTest}
+          variant="outlined"
+          icon={<WarningIcon />}
+        />
       </Box>
     </>
   )

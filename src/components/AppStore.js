@@ -73,23 +73,27 @@ export default function AppStore({
   return (
     <>
       <h2>
-        <AppsIcon color="primary" /> App Store{" "}
-        <Chip
-          label={"View Apps Catalogue..."}
-          onClick={handleModalAppsCatalogueOpen}
-          avatar={
-            <Avatar alt="MWStake" src="/ui/images/dataspectsavatar.png" />
-          }
-          variant="outlined"
-        />{" "}
-        <Chip
-          label={"Check installed apps..."}
-          onClick={handleModalInstalledAppsOpen}
-          avatar={
-            <Avatar alt="MWStake" src="/ui/images/dataspectsavatar.png" />
-          }
-          variant="outlined"
-        />
+        <AppsIcon color="primary" /> App Store
+        <Box m={1}>
+          <Chip
+            label={"View Apps Catalogue..."}
+            onClick={handleModalAppsCatalogueOpen}
+            avatar={
+              <Avatar alt="MWStake" src="/ui/images/dataspectsavatar.png" />
+            }
+            variant="outlined"
+          />
+        </Box>
+        <Box m={1}>
+          <Chip
+            label={"Check installed apps..."}
+            onClick={handleModalInstalledAppsOpen}
+            avatar={
+              <Avatar alt="MWStake" src="/ui/images/dataspectsavatar.png" />
+            }
+            variant="outlined"
+          />
+        </Box>
       </h2>
       <Modal
         open={modalAppsCatalogueOpen}
