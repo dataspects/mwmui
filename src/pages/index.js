@@ -8,7 +8,7 @@ import SnapshotManager from "../components/SnapshotManager"
 import AppStore from "../components/AppStore"
 import Help from "../components/Help"
 import Log from "../components/Log"
-import MediaWikiInfo from "../components/MediaWikiInfo"
+import MediaWiki from "../components/MediaWiki"
 
 const Home = () => {
   const [extensionsInDirectory, setExtensionsInDirectory] = React.useState([])
@@ -243,7 +243,7 @@ const Home = () => {
       {generalSiteInfo ? (
         <>
           <Grid item xs={6}>
-            <MediaWikiInfo generalSiteInfo={generalSiteInfo} />
+            <MediaWiki generalSiteInfo={generalSiteInfo} />
           </Grid>
           <Grid item xs={6}>
             <ExtensionStore
