@@ -58,7 +58,6 @@ export default function MediaWiki({ generalSiteInfo }) {
     axios
       .get(`${process.env.API_URL}?action=systemSettings`)
       .then(res => {
-        console.log(res.data.systemSettings)
         setSystemSettings(res.data.systemSettings)
       })
       .catch(err => {})

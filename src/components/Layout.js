@@ -17,6 +17,11 @@ export default function Layout({ children }) {
         <meta charSet="utf-8" />
         <title>dataspects MediaWiki Manager</title>
         <link rel="canonical" href="https://dserver/ui" />
+        <link
+          rel="shortcut icon"
+          href="https://dserver/ui/favicon.ico"
+          type="image/x-icon"
+        />
       </Helmet>
       <ThemeProvider theme={Theme}>
         <CssBaseline />
