@@ -1,5 +1,5 @@
 import React from "react"
-import { Button, Chip, LinearProgress } from "@material-ui/core"
+import { Paper, Button, Chip, LinearProgress } from "@material-ui/core"
 import SystemUpdateAltIcon from "@material-ui/icons/SystemUpdateAlt"
 import CloudDownloadIcon from "@material-ui/icons/CloudDownload"
 
@@ -16,8 +16,26 @@ export default function VersionManager({
       {upgradesCatalogue ? (
         <>
           <p>
-            You are currently running <b>{generalSiteInfo.generator}</b>.
+            You are currently running <b>{generalSiteInfo.generator}</b>. For
+            MWM version 1 follow these steps to upgrade:
           </p>
+          <Paper elevation={3}>
+            <ol>
+              <li>
+                Edit{" "}
+                <b>
+                  <code>docker-compose.yml > services > mediawiki > image</code>
+                </b>{" "}
+                and set it to{" "}
+                <b>
+                  <code>dataspects/mediawiki:1.35.1-2103040820</code>
+                </b>
+              </li>
+              <li>
+                Run <code>./restart.sh</code>
+              </li>
+            </ol>
+          </Paper>
           <table>
             <thead>
               <tr>
@@ -53,13 +71,14 @@ export default function VersionManager({
               })}
             </tbody>
           </table>
-          <Button variant="outlined" color="primary">
+          <Button variant="outlined" color="primary" disabled>
             Check changes
           </Button>{" "}
           <Button
             variant="contained"
             color="primary"
             onClick={handleUpgradeNow}
+            disabled
           >
             Upgrade now
           </Button>

@@ -36,7 +36,11 @@ export default function Help({ runTest }) {
           onClick={runTest}
           variant="outlined"
           icon={<WarningIcon />}
-        />
+        />{" "}
+        see{" "}
+        <Link href="https://github.com/dataspects/mediawiki-manager/blob/main/mwmapi/test.php">
+          mwmapi/test.php
+        </Link>
       </Box>
     </>
   )
