@@ -26,10 +26,10 @@ const Home = () => {
 
   const getGeneralSiteInfo = React.useCallback(() => {
     axios
-      .get(`${process.env.API_URL}?action=generalSiteInfo`)
+      .get(`${process.env.NEW_API_URL}/mediawiki/generalSiteInfo`)
       .then(res => {
         if (res.data.status.endsWith("MediaWiki info loaded")) {
-          setGeneralSiteInfo(res.data.generalSiteInfo)
+          setGeneralSiteInfo(res.data)
           addToLogStack(res.data.status)
         }
       })

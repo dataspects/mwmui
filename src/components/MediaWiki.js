@@ -82,19 +82,22 @@ export default function MediaWiki({ generalSiteInfo }) {
               <tbody>
                 {show.map(aspect => {
                   if (
-                    typeof generalSiteInfo[aspect] === "string" &&
-                    generalSiteInfo[aspect].startsWith("http")
+                    typeof generalSiteInfo.data.query.general[aspect] ===
+                      "string" &&
+                    generalSiteInfo.data.query.general[aspect].startsWith(
+                      "http"
+                    )
                   ) {
-                    generalSiteInfo[aspect] = (
-                      <Link href={generalSiteInfo[aspect]}>
-                        {generalSiteInfo[aspect]}
+                    generalSiteInfo.data.query.general[aspect] = (
+                      <Link href={generalSiteInfo.data.query.general[aspect]}>
+                        {generalSiteInfo.data.query.general[aspect]}
                       </Link>
                     )
                   }
                   return (
                     <tr key={aspect}>
                       <td>{aspect}</td>
-                      <td>{generalSiteInfo[aspect]}</td>
+                      <td>{generalSiteInfo.data.query.general[aspect]}</td>
                     </tr>
                   )
                 })}

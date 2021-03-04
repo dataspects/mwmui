@@ -30,7 +30,13 @@ export default function Help({ runTest }) {
         {" | "}
         <Link href="https://github.com/dataspects/mwmui">mwmui</Link>
         {" | "}
+        <Link href="https://github.com/dataspects/mwmapi">mwmapi</Link>
+        {" | "}
         <Link href="https://hub.docker.com/u/dataspects">Docker images</Link>
+        {" | "}
+        <Link href="https://mwstake.org/mwstake/wiki/MWStake_MediaWiki_Manager">
+          Project page
+        </Link>
       </Box>
       <Box mt={2}>
         <Chip
