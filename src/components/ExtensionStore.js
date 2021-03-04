@@ -85,7 +85,7 @@ export default function ExtensionStore({
     <>
       <h2>
         <ExtensionIcon color="primary" /> Extension Store
-        <Box m={1}>
+        <Box m={1} display="inline">
           <Chip
             label={"View MWStake Certified Extensions Catalogue..."}
             onClick={handleModalExtensionCatalogueOpen}
@@ -94,7 +94,7 @@ export default function ExtensionStore({
             color="primary"
           />
         </Box>
-        <Box m={1}>
+        <Box m={1} display="inline">
           <Chip
             label={"Check installed extensions..."}
             onClick={handleModalInstalledExtensionsOpen}

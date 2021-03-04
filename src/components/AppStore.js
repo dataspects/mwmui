@@ -74,7 +74,7 @@ export default function AppStore({
     <>
       <h2>
         <AppsIcon color="primary" /> App Store
-        <Box m={1}>
+        <Box m={1} display="inline">
           <Chip
             label={"View Apps Catalogue..."}
             onClick={handleModalAppsCatalogueOpen}
@@ -84,7 +84,7 @@ export default function AppStore({
             variant="outlined"
           />
         </Box>
-        <Box m={1}>
+        <Box m={1} display="inline">
           <Chip
             label={"Check installed apps..."}
             onClick={handleModalInstalledAppsOpen}

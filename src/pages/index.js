@@ -3,7 +3,7 @@ import { Grid, Box, Paper, LinearProgress, Typography } from "@material-ui/core"
 import axios from "axios"
 
 import ExtensionStore from "../components/ExtensionStore"
-import UpgradeManager from "../components/UpgradeManager"
+import VersionManager from "../components/VersionManager"
 import SnapshotManager from "../components/SnapshotManager"
 import AppStore from "../components/AppStore"
 import Help from "../components/Help"
@@ -272,7 +272,7 @@ const Home = () => {
             />
           </Grid>
           <Grid item xs={6}>
-            <UpgradeManager
+            <VersionManager
               upgradesCatalogue={upgradesCatalogue}
               generalSiteInfo={generalSiteInfo}
               handleUpgradeNow={handleUpgradeNow}

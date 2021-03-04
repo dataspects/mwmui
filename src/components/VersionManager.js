@@ -3,7 +3,7 @@ import { Button, Chip, LinearProgress } from "@material-ui/core"
 import SystemUpdateAltIcon from "@material-ui/icons/SystemUpdateAlt"
 import CloudDownloadIcon from "@material-ui/icons/CloudDownload"
 
-export default function UpgradeManager({
+export default function VersionManager({
   upgradesCatalogue,
   generalSiteInfo,
   handleUpgradeNow,
@@ -11,14 +11,12 @@ export default function UpgradeManager({
   return (
     <>
       <h2>
-        <SystemUpdateAltIcon color="primary" /> Upgrade Manager
+        <SystemUpdateAltIcon color="primary" /> Version Manager
       </h2>
       {upgradesCatalogue ? (
         <>
           <p>
-            For your <b>current {generalSiteInfo.generator}</b> and the{" "}
-            <b>versions of its currently installed skins and extensions</b>,
-            there is the following upgrade available:
+            You are currently running <b>{generalSiteInfo.generator}</b>.
           </p>
           <table>
             <thead>
@@ -30,10 +28,10 @@ export default function UpgradeManager({
             <tbody>
               {Object.keys(upgradesCatalogue).map(key => {
                 return (
-                  <tr key={key}>
+                  <tr key={upgradesCatalogue[key].name}>
                     <td>
                       <Chip
-                        label={key}
+                        label={upgradesCatalogue[key].name}
                         variant="outlined"
                         color="primary"
                         icon={<CloudDownloadIcon />}
