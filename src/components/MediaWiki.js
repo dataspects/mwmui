@@ -1,5 +1,13 @@
 import React from "react"
-import { Link, LinearProgress, Box, AppBar, Tabs, Tab } from "@material-ui/core"
+import {
+  Chip,
+  Link,
+  LinearProgress,
+  Box,
+  AppBar,
+  Tabs,
+  Tab,
+} from "@material-ui/core"
 import axios from "axios"
 import { makeStyles } from "@material-ui/core/styles"
 import SettingsIcon from "@material-ui/icons/Settings"
@@ -15,9 +23,14 @@ const useStyles = makeStyles(theme => ({
     overflowY: "scroll",
   },
   tabIcon: { float: "right" },
+  alert: { color: "white", backgroundColor: "red", fontWeight: "bold" },
 }))
 
-export default function MediaWiki({ generalSiteInfo }) {
+export default function MediaWiki({
+  generalSiteInfo,
+  mediawikiIsInSafeMode,
+  setupDiff,
+}) {
   const classes = useStyles()
   const show = [
     "generator",
@@ -64,6 +77,19 @@ export default function MediaWiki({ generalSiteInfo }) {
   }, [])
   return (
     <div className={classes.root}>
+      {mediawikiIsInSafeMode ? (
+        <>
+          <Box mb={1} className={classes.alert}>
+            <Chip
+              label="Your MediaWiki is in safe mode!"
+              className={classes.alert}
+            />
+          </Box>
+          <pre>{JSON.stringify(setupDiff, null, 2)}</pre>
+        </>
+      ) : (
+        <></>
+      )}
       <AppBar position="static">
         <Tabs value={value} onChange={handleChange}>
           <Tab label="MediaWiki Info" icon={<InfoIcon />} />

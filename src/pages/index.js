@@ -23,6 +23,10 @@ const Home = () => {
   const [upgradesCatalogue, setUpgradesCatalogue] = React.useState({})
   const [logStack, setLogStack] = React.useState([])
   const [systemIsBusy, setSystemIsBusy] = React.useState(false)
+  const [mediawikiIsInSafeMode, setMediawikiIsInSafeMode] = React.useState(
+    false
+  )
+  const [setupDiff, setSetupDiff] = React.useState({})
 
   const getGeneralSiteInfo = React.useCallback(() => {
     axios
@@ -99,6 +103,15 @@ const Home = () => {
       .then(res => {
         setUpgradesCatalogue(res.data.upgradesCatalogue)
         addToLogStack(res.data.status)
+      })
+      .catch(err => {})
+    axios
+      .get(`${process.env.NEW_API_URL}/mediawiki/isInSafeMode`)
+      .then(res => {
+        if (res.data.isInSafeMode) {
+          setMediawikiIsInSafeMode(res.data.isInSafeMode)
+          setSetupDiff(res.data.setupDiff)
+        }
       })
       .catch(err => {})
     getExtensionsByMWAPI()
@@ -243,7 +256,11 @@ const Home = () => {
       {generalSiteInfo ? (
         <>
           <Grid item xs={6}>
-            <MediaWiki generalSiteInfo={generalSiteInfo} />
+            <MediaWiki
+              generalSiteInfo={generalSiteInfo}
+              mediawikiIsInSafeMode={mediawikiIsInSafeMode}
+              setupDiff={setupDiff}
+            />
           </Grid>
           <Grid item xs={6}>
             <ExtensionStore
