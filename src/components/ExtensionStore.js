@@ -13,7 +13,6 @@ import {
   Modal,
   Chip,
   Avatar,
-  Typography,
 } from "@material-ui/core"
 import ExtensionCatalogue from "../components/ExtensionCatalogue"
 import ExtensionIcon from "@material-ui/icons/Extension"
@@ -89,7 +88,7 @@ export default function ExtensionStore({
           <Chip
             label={"View MWStake Certified Extensions Catalogue..."}
             onClick={handleModalExtensionCatalogueOpen}
-            avatar={<Avatar alt="MWStake" src="/ui/images/mwstake.png" />}
+            avatar={<Avatar alt="MWStake" src="/images/mwstake.png" />}
             variant="outlined"
             color="primary"
           />
@@ -115,9 +114,6 @@ export default function ExtensionStore({
         onClose={handleModalInstalledExtensionsClose}
       >
         <div className={classes.modal}>
-          <Typography variant="h5" gutterBottom>
-            Extensions currently installed on {generalSiteInfo.base}
-          </Typography>
           <Grid container spacing={3}>
             <Grid item xs={3}>
               <ExtensionsByMWAPI extensionsByMWAPI={extensionsByMWAPI} />

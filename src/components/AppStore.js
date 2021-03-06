@@ -78,9 +78,7 @@ export default function AppStore({
           <Chip
             label={"View Apps Catalogue..."}
             onClick={handleModalAppsCatalogueOpen}
-            avatar={
-              <Avatar alt="MWStake" src="/ui/images/dataspectsavatar.png" />
-            }
+            avatar={<Avatar alt="MWStake" src="/images/dataspectsavatar.png" />}
             variant="outlined"
           />
         </Box>
@@ -88,9 +86,7 @@ export default function AppStore({
           <Chip
             label={"Check installed apps..."}
             onClick={handleModalInstalledAppsOpen}
-            avatar={
-              <Avatar alt="MWStake" src="/ui/images/dataspectsavatar.png" />
-            }
+            avatar={<Avatar alt="MWStake" src="/images/dataspectsavatar.png" />}
             variant="outlined"
           />
         </Box>

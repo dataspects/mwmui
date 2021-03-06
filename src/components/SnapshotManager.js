@@ -22,7 +22,7 @@ export default function SnapshotManager({ snapshotCatalogue, takeSnapshot }) {
       <Button variant="contained" color="primary" onClick={takeSnapshot}>
         Take snapshot
       </Button>
-      {snapshotCatalogue.length > 0 ? (
+      {snapshotCatalogue ? (
         <pre style={{ whiteSpace: "pre-line" }}>
           {snapshotCatalogue.join("\n")}
         </pre>

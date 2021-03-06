@@ -59,7 +59,7 @@ export default function AppsCatalogue(appCatalogue) {
     <Grid container>
       <Grid item xs={12}>
         <img
-          src="/ui/images/dataspects.png"
+          src="/images/dataspects.png"
           alt="dataspects"
           style={{ width: "50px", float: "right" }}
         />

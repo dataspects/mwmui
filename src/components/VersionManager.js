@@ -15,10 +15,14 @@ export default function VersionManager({
       </h2>
       {upgradesCatalogue ? (
         <>
-          <p>
-            You are currently running <b>{generalSiteInfo.generator}</b>. For
-            MWM version 1 follow these steps to upgrade:
-          </p>
+          {generalSiteInfo ? (
+            <p>
+              You are currently running <b>{generalSiteInfo.generator}</b>.
+            </p>
+          ) : (
+            <></>
+          )}
+          <p>For MWM version 1 follow these steps to upgrade:</p>
           <Paper elevation={3}>
             <ol>
               <li>

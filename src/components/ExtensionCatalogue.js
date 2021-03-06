@@ -1,7 +1,8 @@
 import React from "react"
-import { Grid, Typography, Link } from "@material-ui/core"
+import { Grid, Typography } from "@material-ui/core"
 import MUIDataTable from "mui-datatables"
 import ExtensionCatalogueItem from "./ExtensionCatalogueItem"
+import DataspectsSearch from "./DataspectsSearch"
 
 export default function ExtensionCatalogue(extensionCatalogue) {
   const options = {
@@ -87,35 +88,20 @@ export default function ExtensionCatalogue(extensionCatalogue) {
     <Grid container>
       <Grid item xs={12}>
         <img
-          src="/ui/images/mwstake.png"
+          src="/images/mwstake.png"
           alt="MWStake"
-          style={{ width: "50px", float: "right" }}
+          style={{ width: "50px", float: "right", verticalAlign: "middle" }}
         />
         <Typography variant="h5" gutterBottom>
-          MediaWiki Stakeholders Group Certified Extensions Catalogue
-        </Typography>
-        <Typography variant="body1">
-          MWStake curates the following collection of extensions with regard to:
-        </Typography>
-        <ul>
-          <li>compatibility with MediaWiki and other extensions</li>
-          <li>stability</li>
-          <li>documentation</li>
-        </ul>
-        <Typography variant="caption" gutterBottom>
-          The current source is{" "}
-          <Link href="https://github.com/dataspects/mediawiki-manager/blob/main/catalogues/extensions.json">
-            https://github.com/dataspects/mediawiki-manager/blob/main/catalogues/extensions.json
-          </Link>
-          .
+          MediaWiki Stakeholders Group
+          <br />
+          Certified Extensions Catalogue
         </Typography>
       </Grid>
       <Grid item xs={12}>
-        {getTable()}
+        {/* {getTable()} */}
+        <DataspectsSearch />
       </Grid>
-      <Typography variant="caption" gutterBottom>
-        CodeTags: LEX2102271141
-      </Typography>
     </Grid>
   )
 }

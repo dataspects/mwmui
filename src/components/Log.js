@@ -64,9 +64,10 @@ const Log = ({ logStackRef, logStack, systemIsBusy }) => {
         </div>
       </Modal>
       <Box ref={logStackRef} ml={2} mt={1} className={classes.logStack}>
-        {logStack.map(item => {
-          return <div key={item}>{item}</div>
-        })}
+        {logStack.length > 0 &&
+          logStack.map(item => {
+            return <div key={item}>{item}</div>
+          })}
         {systemIsBusy ? <LinearProgress /> : <></>}
       </Box>
     </>

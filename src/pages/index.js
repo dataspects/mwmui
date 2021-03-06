@@ -42,7 +42,7 @@ const Home = () => {
 
   const getExtensionsOverview = React.useCallback(() => {
     axios
-      .get(`${process.env.API_URL}?action=overview`)
+      .get(`${process.env.MWM_API_URL}?action=overview`)
       .then(res => {
         setExtensionsInDirectory(res.data.extensionsInDirectory)
         setComposerjsonReq(res.data.composerjsonReq)
@@ -53,7 +53,7 @@ const Home = () => {
 
   const getSnapshotsCatalogue = React.useCallback(() => {
     axios
-      .get(`${process.env.API_URL}?action=snapshotCatalogue`)
+      .get(`${process.env.MWM_API_URL}?action=snapshotCatalogue`)
       .then(res => {
         setSnapshotCatalogue(res.data.snapshotCatalogue)
         addToLogStack(res.data.status)
@@ -63,7 +63,7 @@ const Home = () => {
 
   const getInstalledApps = React.useCallback(() => {
     axios
-      .get(`${process.env.API_URL}?action=installedApps`)
+      .get(`${process.env.MWM_API_URL}?action=installedApps`)
       .then(res => {
         setInstalledApps(res.data.installedApps)
         addToLogStack(res.data.status)
@@ -73,7 +73,7 @@ const Home = () => {
 
   const getExtensionsByMWAPI = React.useCallback(() => {
     axios
-      .get(`${process.env.API_URL}?action=extensionsByMWAPI`)
+      .get(`${process.env.MWM_API_URL}?action=extensionsByMWAPI`)
       .then(res => {
         setExtensionsByMWAPI(res.data.extensionsByMWAPI)
         addToLogStack(res.data.status)
@@ -85,21 +85,21 @@ const Home = () => {
     getGeneralSiteInfo()
     getExtensionsOverview()
     axios
-      .get(`${process.env.API_URL}?action=extensionCatalogue`)
+      .get(`${process.env.MWM_API_URL}?action=extensionCatalogue`)
       .then(res => {
         setExtensionCatalogue(res.data.extensionCatalogue)
         addToLogStack(res.data.status)
       })
       .catch(err => {})
     axios
-      .get(`${process.env.API_URL}?action=appCatalogue`)
+      .get(`${process.env.MWM_API_URL}?action=appCatalogue`)
       .then(res => {
         setAppCatalogue(res.data.appCatalogue)
         addToLogStack(res.data.status)
       })
       .catch(err => {})
     axios
-      .get(`${process.env.API_URL}?action=upgradesCatalogue`)
+      .get(`${process.env.MWM_API_URL}?action=upgradesCatalogue`)
       .then(res => {
         setUpgradesCatalogue(res.data.upgradesCatalogue)
         addToLogStack(res.data.status)
@@ -138,7 +138,7 @@ const Home = () => {
     addToLogStack(`Managing extension ${currentExtensionName}...`)
     axios
       .get(
-        `${process.env.API_URL}?action=manageExtension&mode=${mode.value}&extensionName=${currentExtensionName}`
+        `${process.env.MWM_API_URL}?action=manageExtension&mode=${mode.value}&extensionName=${currentExtensionName}`
       )
       .then(res => {
         getExtensionsOverview()
@@ -163,7 +163,7 @@ const Home = () => {
     addToLogStack(`Managing app ${currentAppName}...`)
     axios
       .get(
-        `${process.env.API_URL}?action=manageApp&mode=${mode.value}&appName=${currentAppName}`
+        `${process.env.MWM_API_URL}?action=manageApp&mode=${mode.value}&appName=${currentAppName}`
       )
       .then(res => {
         setSystemIsBusy(false)
@@ -178,7 +178,7 @@ const Home = () => {
     setSystemIsBusy(true)
     addToLogStack("Taking snapshot...")
     axios
-      .get(`${process.env.API_URL}?action=takeSnapshot`)
+      .get(`${process.env.MWM_API_URL}?action=takeSnapshot`)
       .then(res => {
         setSystemIsBusy(false)
         addToLogStack(res.data.status)
@@ -193,7 +193,7 @@ const Home = () => {
     setSystemIsBusy(true)
     addToLogStack("Upgrading now...")
     axios
-      .get(`${process.env.API_URL}?action=upgradeNow`)
+      .get(`${process.env.MWM_API_URL}?action=upgradeNow`)
       .then(res => {
         getGeneralSiteInfo()
         setSystemIsBusy(false)
@@ -216,7 +216,7 @@ const Home = () => {
     setSystemIsBusy(true)
     addToLogStack("Running test")
     axios
-      .get(`${process.env.API_URL}?action=runTest`)
+      .get(`${process.env.MWM_API_URL}?action=runTest`)
       .then(res => {
         getExtensionsOverview()
         getSnapshotsCatalogue()
@@ -254,72 +254,71 @@ const Home = () => {
         </Box>
       </Grid>
       {generalSiteInfo ? (
-        <>
-          <Grid item xs={6}>
-            <MediaWiki
-              generalSiteInfo={generalSiteInfo}
-              mediawikiIsInSafeMode={mediawikiIsInSafeMode}
-              setupDiff={setupDiff}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <ExtensionStore
-              handleManageExtension={handleManageExtension}
-              handleExtensionName={handleExtensionName}
-              currentExtensionName={currentExtensionName}
-              extensionCatalogue={extensionCatalogue}
-              extensionsByMWAPI={extensionsByMWAPI}
-              composerjsonReq={composerjsonReq}
-              wfLoadExtensions={wfLoadExtensions}
-              extensionsInDirectory={extensionsInDirectory}
-              getExtensionsOverview={getExtensionsOverview}
-              getExtensionsByMWAPI={getExtensionsByMWAPI}
-              generalSiteInfo={generalSiteInfo}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <AppStore
-              handleManageApp={handleManageApp}
-              handleAppName={handleAppName}
-              currentAppName={currentAppName}
-              appCatalogue={appCatalogue}
-              installedApps={installedApps}
-              getInstalledApps={getInstalledApps}
-              generalSiteInfo={generalSiteInfo}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <VersionManager
-              upgradesCatalogue={upgradesCatalogue}
-              generalSiteInfo={generalSiteInfo}
-              handleUpgradeNow={handleUpgradeNow}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <SnapshotManager
-              snapshotCatalogue={snapshotCatalogue}
-              takeSnapshot={takeSnapshot}
-            />
-          </Grid>
-        </>
-      ) : (
         <Grid item xs={6}>
-          Contacting MediaWiki API...
-          <LinearProgress />
-          Just a moment &mdash; and if we're hangin' here, your MediaWiki might
-          be down. :(
-          <br />
-          In that case, here's a friend:
-          <Box>
-            <Typography color="primary">
-              <code>
-                user@server:~/mediawiki-manager$ sudo docker logs -f
-                mediawiki_canasta
-              </code>
-            </Typography>
-          </Box>
+          <MediaWiki
+            generalSiteInfo={generalSiteInfo}
+            mediawikiIsInSafeMode={mediawikiIsInSafeMode}
+            setupDiff={setupDiff}
+          />
         </Grid>
+      ) : (
+        <></>
       )}
+      <Grid item xs={6}>
+        <ExtensionStore
+          handleManageExtension={handleManageExtension}
+          handleExtensionName={handleExtensionName}
+          currentExtensionName={currentExtensionName}
+          extensionCatalogue={extensionCatalogue}
+          extensionsByMWAPI={extensionsByMWAPI}
+          composerjsonReq={composerjsonReq}
+          wfLoadExtensions={wfLoadExtensions}
+          extensionsInDirectory={extensionsInDirectory}
+          getExtensionsOverview={getExtensionsOverview}
+          getExtensionsByMWAPI={getExtensionsByMWAPI}
+          generalSiteInfo={generalSiteInfo}
+        />
+      </Grid>
+      <Grid item xs={6}>
+        <AppStore
+          handleManageApp={handleManageApp}
+          handleAppName={handleAppName}
+          currentAppName={currentAppName}
+          appCatalogue={appCatalogue}
+          installedApps={installedApps}
+          getInstalledApps={getInstalledApps}
+          generalSiteInfo={generalSiteInfo}
+        />
+      </Grid>
+      <Grid item xs={6}>
+        <VersionManager
+          upgradesCatalogue={upgradesCatalogue}
+          generalSiteInfo={generalSiteInfo}
+          handleUpgradeNow={handleUpgradeNow}
+        />
+      </Grid>
+      <Grid item xs={6}>
+        <SnapshotManager
+          snapshotCatalogue={snapshotCatalogue}
+          takeSnapshot={takeSnapshot}
+        />
+      </Grid>
+      <Grid item xs={6}>
+        Contacting MediaWiki API...
+        <LinearProgress />
+        Just a moment &mdash; and if we're hangin' here, your MediaWiki might be
+        down. :(
+        <br />
+        In that case, here's a friend:
+        <Box>
+          <Typography color="primary">
+            <code>
+              user@server:~/mediawiki-manager$ sudo docker logs -f
+              mediawiki_canasta
+            </code>
+          </Typography>
+        </Box>
+      </Grid>
     </Grid>
   )
 }

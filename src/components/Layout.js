@@ -27,18 +27,14 @@ export default function Layout({ children }) {
         <CssBaseline />
         <Box p={5}>
           <Grid container spacing={5}>
-            <Grid item xs={2}>
-              {/* FIXME: this image doesn't use the path prefix, so I hacked a ui/ in front of it. */}
-              <img src="/ui/images/dataspects.png" alt="dataspects" />
-            </Grid>
-            <Grid item xs={8} style={{ textAlign: "center" }}>
-              <Box fontSize="h4.fontSize" m={1}>
+            <Grid item xs={10}>
+              <Box fontSize="h4.fontSize">
                 <img
-                  src="/ui/images/mwstake.png"
+                  src="/images/mwstake.png"
                   alt="MWStake"
                   style={{ width: "50px", verticalAlign: "middle" }}
                 />{" "}
-                MediaWiki Manager
+                MWStake MediaWiki Manager
               </Box>
             </Grid>
             <Grid item xs={2} style={{ textAlign: "right" }}>
