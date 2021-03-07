@@ -27,8 +27,12 @@ export default function ExtensionCatalogue(extensionCatalogue) {
             // LEX2103071128
             ds0__namespace: {
               filterInTokenShould: [
+                // {
+                //   token: "https://mwstake.org/mwstake/wiki/",
+                //   timestamp: 1592566981965,
+                // },
                 {
-                  token: "https://mwstake.org/mwstake/wiki/",
+                  token: "//www.mediawiki.org/wiki/",
                   timestamp: 1592566981965,
                 },
               ],
@@ -56,6 +60,13 @@ export default function ExtensionCatalogue(extensionCatalogue) {
     setcurrentpagenumber(pageNumber)
     executeSearch()
   }
+  const showThesePredicateNames = [
+    "mw0__HasTemplate",
+    "mw0__HasCategory",
+    "mw0__HasSection",
+    "mw1__HasExternalLink",
+    "mw0__HasInternalLink",
+  ]
   return (
     <Grid container>
       <Grid item xs={12}>
@@ -91,6 +102,7 @@ export default function ExtensionCatalogue(extensionCatalogue) {
           searchResults={searchResults}
           currentpagenumber={currentpagenumber}
           paginate={paginate}
+          showThesePredicateNames={showThesePredicateNames}
         />
       </Grid>
     </Grid>

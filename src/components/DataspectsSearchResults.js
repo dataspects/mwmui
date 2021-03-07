@@ -24,6 +24,7 @@ const DataspectsSearchResults = ({
   numberOfSERPages,
   paginate,
   currentpagenumber,
+  showThesePredicateNames,
 }) => {
   const injectSERsSectionHeader = ser => {
     if (ser.isFirstSEROfNewMatchSection) {
@@ -32,7 +33,12 @@ const DataspectsSearchResults = ({
   }
 
   const getSER = ser => {
-    return <MWStakeExtensionCatalogueSearchResult ser={ser} />
+    return (
+      <MWStakeExtensionCatalogueSearchResult
+        ser={ser}
+        showThesePredicateNames={showThesePredicateNames}
+      />
+    )
   }
 
   if (searchResults.data) {

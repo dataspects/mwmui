@@ -1,8 +1,12 @@
 import React from "react"
 import { Grid, Link, Typography, Box } from "@material-ui/core"
 import DSRStyles from "./DataspectsSearch.module.css"
+import DataspectsEntityAnnotations from "./DataspectsEntityAnnotations"
 
-export default function MWStakeExtensionCatalogueSearchResult({ ser }) {
+export default function MWStakeExtensionCatalogueSearchResult({
+  ser,
+  showThesePredicateNames,
+}) {
   const highlightedEntityTypeAndTitle = ser => {
     return {
       __html: ser.hasEntityType + ' "' + ser.highlight.hasEntityTitle + '"',
@@ -31,6 +35,12 @@ export default function MWStakeExtensionCatalogueSearchResult({ ser }) {
       </Grid>
       <Grid item xs={12}>
         {ser.highlight.hasEntityContentTEXT}
+      </Grid>
+      <Grid item container xs={12}>
+        <DataspectsEntityAnnotations
+          ser={ser}
+          showThesePredicateNames={showThesePredicateNames}
+        />
       </Grid>
     </Grid>
   )
