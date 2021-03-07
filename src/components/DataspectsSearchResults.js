@@ -1,7 +1,7 @@
 import React from "react"
 import { withStyles } from "@material-ui/core/styles"
 import { Box, Grid } from "@material-ui/core"
-import { ToggleButtonGroup, ToggleButton, Pagination } from "@material-ui/lab"
+import { Pagination } from "@material-ui/lab"
 import MWStakeExtensionCatalogueSearchResult from "./MWStakeExtensionCatalogueSearchResult"
 
 const styles = {
@@ -24,8 +24,6 @@ const DataspectsSearchResults = ({
   numberOfSERPages,
   paginate,
   currentpagenumber,
-  showThesePredicateNamespaces,
-  classes,
 }) => {
   const injectSERsSectionHeader = ser => {
     if (ser.isFirstSEROfNewMatchSection) {
@@ -40,17 +38,6 @@ const DataspectsSearchResults = ({
   if (searchResults.data) {
     return (
       <>
-        <Grid item xs={12} sm={6}>
-          <Box pt={2}>
-            <Pagination
-              count={numberOfSERPages}
-              onChange={paginate}
-              page={currentpagenumber}
-              defaultPage={1}
-            />
-          </Box>
-        </Grid>
-
         <Grid item xs={12}>
           <Box my={3}>
             Page {currentpagenumber} of {searchResults.data.total} results (

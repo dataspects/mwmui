@@ -1,0 +1,22 @@
+.serRoot {
+    margin-bottom: 50px;
+}
+
+.hasEntityURL {
+    color: #006621;
+}
+
+em {
+    font-weight: bold;
+    font-style: normal;
+}
+
+.devComment {
+    font-family: monospace;
+    color: grey;
+    font-size: 10px;
+    font-style: italic;
+}
+.devComment::before {
+    content: "dataspects dev comment: ";
+}
