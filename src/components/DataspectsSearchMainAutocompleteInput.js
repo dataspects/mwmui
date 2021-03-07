@@ -15,15 +15,41 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default function DataspectsSearch() {
+/*
+
+  <DataspectsSearch /> uses 2 functions which are implemented here:
+
+    1.  typeahead:      which looks up and sets the typeahead options
+    2.  triggerSearch:  which triggers the upstream search based for a
+                        newSearchQueryString
+
+
+  Here are the props that need to be implemented upstream and passed into
+  <DataspectsSearch <props...> />:
+
+    1.  currentSearchQueryString: an upstream state
+
+    2.  newSearchQueryString:     an upstream function
+
+    3.  setTypeAheadString:       an upstream state setting function
+
+*/
+
+export default function DataspectsSearchMainAutocompleteInput({
+  newSearchQueryString,
+  setTypeAheadString,
+  label,
+  showDataspectsSearchLink,
+}) {
   const classes = useStyles()
-  const [typeAheadString, setTypeAheadString] = React.useState("")
+
   const [searchQueryString, setSearchQueryString] = React.useState("")
 
   const [options, setOptions] = React.useState([])
 
   const triggerSearch = (event, value) => {
     if (value != null) {
+      newSearchQueryString(value)
     }
   }
   const typeahead = (event, value) => {
@@ -65,7 +91,7 @@ export default function DataspectsSearch() {
         renderInput={params => (
           <TextField
             {...params}
-            label="Search extensions..."
+            label={label}
             variant="outlined"
             InputProps={{
               ...params.InputProps,
@@ -81,14 +107,18 @@ export default function DataspectsSearch() {
           />
         )}
       />
-      <Link href="https://dataspects.com">
-        <span className={classes.dataspectsSB}>Search by</span>
-        <img
-          src="/images/dataspects.png"
-          alt="Search by dataspects"
-          className={classes.dataspectsLogo}
-        />
-      </Link>
+      {showDataspectsSearchLink ? (
+        <Link href="https://dataspects.com">
+          <span className={classes.dataspectsSB}>Search by</span>
+          <img
+            src="/images/dataspects.png"
+            alt="Search by dataspects"
+            className={classes.dataspectsLogo}
+          />
+        </Link>
+      ) : (
+        <></>
+      )}
     </div>
   )
 }

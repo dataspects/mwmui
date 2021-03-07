@@ -1,89 +1,10 @@
 import React from "react"
 import { Grid, Typography } from "@material-ui/core"
-import MUIDataTable from "mui-datatables"
-import ExtensionCatalogueItem from "./ExtensionCatalogueItem"
-import DataspectsSearch from "./DataspectsSearch"
+import DataspectsSearchMainAutocompleteInput from "./DataspectsSearchMainAutocompleteInput"
 
 export default function ExtensionCatalogue(extensionCatalogue) {
-  const options = {
-    tableBodyHeight: "100%",
-    selectableRows: "none",
-    searchOpen: true,
-    customRowRender: (data, dataIndex, rowIndex) => {
-      return (
-        <React.Fragment key={rowIndex}>
-          <ExtensionCatalogueItem data={data} />
-        </React.Fragment>
-      )
-    },
-  }
-
-  const columns = [
-    {
-      name: "name",
-      label: "Name",
-      options: {
-        filter: true,
-        sort: true,
-      },
-    },
-    {
-      name: "requires",
-      label: "Requires",
-      options: {
-        filter: false,
-        sort: false,
-      },
-    },
-    {
-      name: "categories",
-      label: "Categories",
-      options: {
-        filter: true,
-        sort: true,
-      },
-    },
-    {
-      name: "documentation",
-      options: {
-        display: "excluded",
-      },
-    },
-    {
-      name: "isInstalled",
-      options: {
-        display: "excluded",
-      },
-    },
-    {
-      name: "installation-aspects",
-      label: "Installation Aspects",
-      options: {
-        filter: false,
-        sort: false,
-      },
-    },
-  ]
-
-  const getTable = () => {
-    if (extensionCatalogue) {
-      try {
-        return (
-          <MUIDataTable
-            columns={columns}
-            // FIXME
-            data={extensionCatalogue.extensionCatalogue}
-            options={options}
-          />
-        )
-      } catch {
-        //FIXME
-        console.log()
-        return ""
-      }
-    }
-  }
-
+  const [typeAheadString, setTypeAheadString] = React.useState("")
+  const newSearchQueryString = value => {}
   return (
     <Grid container>
       <Grid item xs={12}>
@@ -99,8 +20,12 @@ export default function ExtensionCatalogue(extensionCatalogue) {
         </Typography>
       </Grid>
       <Grid item xs={12}>
-        {/* {getTable()} */}
-        <DataspectsSearch />
+        <DataspectsSearchMainAutocompleteInput
+          newSearchQueryString={newSearchQueryString}
+          setTypeAheadString={setTypeAheadString}
+          label="Search extensions..."
+          showDataspectsSearchLink={true}
+        />
       </Grid>
     </Grid>
   )
