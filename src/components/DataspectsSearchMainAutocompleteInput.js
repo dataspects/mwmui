@@ -20,14 +20,14 @@ const useStyles = makeStyles(theme => ({
   <DataspectsSearch /> uses 2 functions which are implemented here:
 
     1.  typeahead:      which looks up and sets the typeahead options
-    2.  triggerSearch:  which triggers the upstream search based for a
+    2.  triggerSearch:  which triggers the upstream search for a
                         newSearchQueryString
 
 
   Here are the props that need to be implemented upstream and passed into
   <DataspectsSearch <props...> />:
 
-    1.  currentSearchQueryString: an upstream state
+    1.  currentSearchQueryString: an upstream state (REFACTOR!)
 
     2.  newSearchQueryString:     an upstream function
 

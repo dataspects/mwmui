@@ -1,10 +1,39 @@
 import React from "react"
 import { Grid, Typography } from "@material-ui/core"
+import axios from "axios"
 import DataspectsSearchMainAutocompleteInput from "./DataspectsSearchMainAutocompleteInput"
+import DataspectsSearchResults from "./DataspectsSearchResults"
+import MWStakeExtensionCatalogueSearchResult from "./MWStakeExtensionCatalogueSearchResult"
 
 export default function ExtensionCatalogue(extensionCatalogue) {
   const [typeAheadString, setTypeAheadString] = React.useState("")
-  const newSearchQueryString = value => {}
+  const [searchResults, setSearchResults] = React.useState({})
+  // Mobe to lib!
+  const isBrowser = () => typeof window !== `undefined`
+  const executeSearch = React.useCallback(() => {
+    axios
+      .post(`${process.env.DSAPI_URL}/search`, {
+        queryString: "what",
+        from: 0,
+        size: 5,
+        explain: false,
+        profile: false,
+        facetingStack: {},
+      })
+      .then(res => {
+        if (isBrowser()) {
+          window.scrollTo(0, 0)
+        }
+        setSearchResults(res)
+      })
+      .catch(error => {
+        console.error(error)
+      })
+  }, [])
+
+  const newSearchQueryString = value => {
+    executeSearch()
+  }
   return (
     <Grid container>
       <Grid item xs={12}>
@@ -25,6 +54,12 @@ export default function ExtensionCatalogue(extensionCatalogue) {
           setTypeAheadString={setTypeAheadString}
           label="Search extensions..."
           showDataspectsSearchLink={true}
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <DataspectsSearchResults
+          resultComponents={[MWStakeExtensionCatalogueSearchResult]}
+          searchResults={searchResults}
         />
       </Grid>
     </Grid>
