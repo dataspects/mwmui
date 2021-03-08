@@ -55,7 +55,6 @@ const Home = () => {
     axios
       .get(`${process.env.MWMAPI_URL}?action=snapshotCatalogue`)
       .then(res => {
-        console.log(res)
         setSnapshotCatalogue(res.data.snapshotCatalogue)
         addToLogStack(res.data.status)
       })

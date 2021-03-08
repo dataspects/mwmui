@@ -1,7 +1,7 @@
 import React from "react"
-import { Grid, Link, Typography, Box } from "@material-ui/core"
+import { Button, Chip, Grid, Link, Typography, Box } from "@material-ui/core"
 import DSRStyles from "./DataspectsSearch.module.css"
-import DataspectsEntityAnnotations from "./DataspectsEntityAnnotations"
+import ExtensionProfile from "./ExtensionProfile"
 
 export default function MWStakeExtensionCatalogueSearchResult({
   ser,
@@ -13,7 +13,7 @@ export default function MWStakeExtensionCatalogueSearchResult({
     }
   }
   return (
-    <Grid container item spacing={0} className={DSRStyles.serRoot}>
+    <Grid container item spacing={1} className={DSRStyles.serRoot}>
       <Grid item xs={12}>
         <Typography variant="h6" underline="none">
           <img
@@ -25,7 +25,11 @@ export default function MWStakeExtensionCatalogueSearchResult({
             <span
               dangerouslySetInnerHTML={highlightedEntityTypeAndTitle(ser)}
             ></span>
-          </Link>
+          </Link>{" "}
+          <Chip label="Stable" className={DSRStyles.stableExtension} />{" "}
+          <Button variant="contained" color="primary">
+            Install
+          </Button>
         </Typography>
       </Grid>
       <Grid item xs={12} className={DSRStyles.hasEntityURL}>
@@ -37,10 +41,7 @@ export default function MWStakeExtensionCatalogueSearchResult({
         {ser.highlight.hasEntityContentTEXT}
       </Grid>
       <Grid item container xs={12}>
-        <DataspectsEntityAnnotations
-          ser={ser}
-          showThesePredicateNames={showThesePredicateNames}
-        />
+        <ExtensionProfile annotations={ser.annotations} />
       </Grid>
     </Grid>
   )

@@ -60,7 +60,6 @@ export default function DataspectsSearchMainAutocompleteInput({
           queryString: value,
         })
         .then(res => {
-          console.log(res)
           setOptions(
             res.data.typeAheadBuckets.map(function (bucket) {
               if (!bucket) {

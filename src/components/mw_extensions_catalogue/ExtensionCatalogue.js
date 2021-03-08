@@ -1,7 +1,7 @@
 import React from "react"
 import { Grid, Typography, Box } from "@material-ui/core"
 import axios from "axios"
-import DataspectsSearchMainAutocompleteInput from "./DataspectsSearchMainAutocompleteInput"
+import DataspectsSearchMainAutocompleteInput from "./dataspects_core/DataspectsSearchMainAutocompleteInput"
 import DataspectsSearchResults from "./DataspectsSearchResults"
 import MWStakeExtensionCatalogueSearchResult from "./MWStakeExtensionCatalogueSearchResult"
 import DSRStyles from "./DataspectsSearch.module.css"

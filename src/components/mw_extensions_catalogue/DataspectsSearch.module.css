@@ -17,6 +17,20 @@ em {
     font-size: 10px;
     font-style: italic;
 }
+
+.epChip {
+    line-height: 2.2;
+}
+
 .devComment::before {
     content: "dataspects dev comment: ";
+}
+
+.mw0__HasSection {
+    background-color: lightpink;
+}
+
+.stableExtension {
+    background-color:lightgreen;
+    font-weight: bold;
 }

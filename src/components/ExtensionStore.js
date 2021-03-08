@@ -14,7 +14,7 @@ import {
   Chip,
   Avatar,
 } from "@material-ui/core"
-import ExtensionCatalogue from "../components/ExtensionCatalogue"
+import ExtensionCatalogue from "../components/mw_extensions_catalogue/ExtensionCatalogue"
 import ExtensionIcon from "@material-ui/icons/Extension"
 import { makeStyles } from "@material-ui/core/styles"
 import ExtensionsInDirectory from "../components/ExtensionsInDirectory"
