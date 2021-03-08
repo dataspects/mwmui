@@ -6,7 +6,6 @@ import {
   Grid,
   Chip,
   Box,
-  Typography,
 } from "@material-ui/core"
 import DSRStyles from "./DataspectsSearch.module.css"
 
@@ -34,6 +33,7 @@ export default function ExtensionProfile({ annotations }) {
                   </Box>
                 )
               }
+              return <></>
             })}
           </CardContent>
         </Card>
@@ -62,6 +62,7 @@ export default function ExtensionProfile({ annotations }) {
                   </Box>
                 )
               }
+              return <></>
             })}
           </CardContent>
         </Card>

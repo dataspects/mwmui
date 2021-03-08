@@ -49,6 +49,8 @@ const Log = ({ logStackRef, logStack, systemIsBusy }) => {
   const handleModalLogClose = () => {
     setModalLogOpen(false)
   }
+  // As two log items could be identical, we add:
+  var logItemCounter = 0
   return (
     <>
       <Chip label="Log" icon={<ShortTextIcon />} />{" "}
@@ -66,7 +68,7 @@ const Log = ({ logStackRef, logStack, systemIsBusy }) => {
       <Box ref={logStackRef} ml={2} mt={1} className={classes.logStack}>
         {logStack.length > 0 &&
           logStack.map(item => {
-            return <div key={item}>{item}</div>
+            return <div key={item + logItemCounter++}>{item}</div>
           })}
         {systemIsBusy ? <LinearProgress /> : <></>}
       </Box>
