@@ -2,6 +2,7 @@ import React from "react"
 import { Button, Chip, Grid, Link, Typography, Box } from "@material-ui/core"
 import DSRStyles from "./DataspectsSearch.module.css"
 import ExtensionProfile from "./ExtensionProfile"
+import DataspectsEntityAnnotations from "./DataspectsEntityAnnotations"
 
 export default function MWStakeExtensionCatalogueSearchResult({
   ser,
@@ -12,6 +13,23 @@ export default function MWStakeExtensionCatalogueSearchResult({
       __html: ser.hasEntityType + ' "' + ser.highlight.hasEntityTitle + '"',
     }
   }
+
+  const extensionStatus = annotations => {
+    for (var i = 0; i < annotations.length; i++) {
+      if (annotations[i].predicate === "mwo1__HasExtensionStatus") {
+        return (
+          <>
+            <Chip
+              label={annotations[i].object}
+              className={DSRStyles.stableExtension}
+            />{" "}
+          </>
+        )
+      }
+    }
+    return <></>
+  }
+
   return (
     <Grid container item spacing={1} className={DSRStyles.serRoot}>
       <Grid item xs={12}>
@@ -26,7 +44,7 @@ export default function MWStakeExtensionCatalogueSearchResult({
               dangerouslySetInnerHTML={highlightedEntityTypeAndTitle(ser)}
             ></span>
           </Link>{" "}
-          <Chip label="Stable" className={DSRStyles.stableExtension} />{" "}
+          {extensionStatus(ser.annotations)}
           <Button variant="contained" color="primary">
             Install
           </Button>
@@ -42,6 +60,10 @@ export default function MWStakeExtensionCatalogueSearchResult({
       </Grid>
       <Grid item container xs={12}>
         <ExtensionProfile annotations={ser.annotations} />
+        <DataspectsEntityAnnotations
+          ser={ser}
+          showThesePredicateNames={showThesePredicateNames}
+        />
       </Grid>
     </Grid>
   )

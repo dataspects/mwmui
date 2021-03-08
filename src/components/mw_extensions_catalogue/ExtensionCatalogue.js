@@ -61,11 +61,12 @@ export default function ExtensionCatalogue(extensionCatalogue) {
     executeSearch()
   }
   const showThesePredicateNames = [
-    "mw0__HasTemplate",
+    // "mw0__HasTemplate",
     "mw0__HasCategory",
     "mw0__HasSection",
-    "mw1__HasExternalLink",
-    "mw0__HasInternalLink",
+    "mwo1__HasExtensionStatus",
+    // "mw1__HasExternalLink",
+    // "mw0__HasInternalLink",
   ]
   return (
     <Grid container>
