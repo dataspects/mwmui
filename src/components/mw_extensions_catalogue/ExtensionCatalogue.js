@@ -16,6 +16,7 @@ export default function ExtensionCatalogue(extensionCatalogue) {
   const isBrowser = () => typeof window !== `undefined`
   const executeSearch = React.useCallback(
     value => {
+      console.log("one")
       axios
         .post(`${process.env.DSAPI_URL}/search`, {
           queryString: value,
@@ -52,9 +53,13 @@ export default function ExtensionCatalogue(extensionCatalogue) {
     [returnSERsFrom, numerOfSERsPerPage]
   )
 
-  const newSearchQueryString = value => {
-    executeSearch(value)
-  }
+  const newSearchQueryString = React.useCallback(
+    value => {
+      executeSearch(value)
+    },
+    [executeSearch]
+  )
+
   const paginate = (event, pageNumber) => {
     setReturnSERsFrom((pageNumber - 1) * numerOfSERsPerPage)
     setcurrentpagenumber(pageNumber)

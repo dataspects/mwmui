@@ -97,12 +97,6 @@ export default function DataspectsSearchMainAutocompleteInput({
               type: "search",
             }}
             data-cy="searchQueryStringTextField"
-            onKeyPress={ev => {
-              if (ev.key === "Enter") {
-                ev.preventDefault()
-                triggerSearch(ev, searchQueryString)
-              }
-            }}
           />
         )}
       />
