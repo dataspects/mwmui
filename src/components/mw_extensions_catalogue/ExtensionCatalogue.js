@@ -16,7 +16,6 @@ export default function ExtensionCatalogue(extensionCatalogue) {
   const isBrowser = () => typeof window !== `undefined`
   const executeSearch = React.useCallback(
     value => {
-      console.log("one")
       axios
         .post(`${process.env.DSAPI_URL}/search`, {
           queryString: value,
