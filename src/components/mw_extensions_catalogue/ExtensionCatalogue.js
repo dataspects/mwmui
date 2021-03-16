@@ -52,7 +52,7 @@ export default function ExtensionCatalogue(extensionCatalogue) {
     [returnSERsFrom, numerOfSERsPerPage]
   )
 
-  const newSearchQueryString = React.useCallback(
+  const handleNewSearchQueryString = React.useCallback(
     value => {
       executeSearch(value)
     },
@@ -86,7 +86,7 @@ export default function ExtensionCatalogue(extensionCatalogue) {
       </Grid>
       <Grid item xs={7}>
         <DataspectsSearchMainAutocompleteInput
-          newSearchQueryString={newSearchQueryString}
+          handleNewSearchQueryString={handleNewSearchQueryString}
           setTypeAheadString={setTypeAheadString}
           label="Search extensions..."
           showDataspectsSearchLink={true}

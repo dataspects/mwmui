@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
 
     1.  typeahead:      which looks up and sets the typeahead options
     2.  triggerSearch:  which triggers the upstream search for a
-                        newSearchQueryString
+                        handleNewSearchQueryString
 
 
   Here are the props that need to be implemented upstream and passed into
@@ -29,14 +29,14 @@ const useStyles = makeStyles(theme => ({
 
     1.  currentSearchQueryString: an upstream state (REFACTOR!)
 
-    2.  newSearchQueryString:     an upstream function
+    2.  handleNewSearchQueryString:     an upstream function
 
     3.  setTypeAheadString:       an upstream state setting function
 
 */
 
 export default function DataspectsSearchMainAutocompleteInput({
-  newSearchQueryString,
+  handleNewSearchQueryString,
   setTypeAheadString,
   label,
   showDataspectsSearchLink,
@@ -49,7 +49,7 @@ export default function DataspectsSearchMainAutocompleteInput({
 
   const triggerSearch = (event, value) => {
     if (value != null) {
-      newSearchQueryString(value)
+      handleNewSearchQueryString(value)
     }
   }
   const typeahead = (event, value) => {
